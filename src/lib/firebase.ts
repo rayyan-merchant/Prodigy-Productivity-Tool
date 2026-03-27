@@ -1,11 +1,9 @@
-
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
 
-// Your Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyCTU4X1f29IBEKeIb-bL34tsj1w16cFR80",
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "prodigy-fse.firebaseapp.com",
@@ -16,16 +14,13 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-T6BSZ23PS0"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase services
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 export const functions = getFunctions(app);
 
-// Connect to the Firebase Emulator Suite when in development
 if (import.meta.env.DEV) {
   try {
     connectFunctionsEmulator(functions, "localhost", 5001);

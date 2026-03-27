@@ -26,7 +26,6 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ isOpen, note, onClose, onSave }
   const [isGeneratingTitleAndTags, setIsGeneratingTitleAndTags] = useState(false);
   const { toast } = useToast();
 
-  // Reset form when a new note is loaded or created
   useEffect(() => {
     if (note) {
       setTitle(note.title);
@@ -41,7 +40,7 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ isOpen, note, onClose, onSave }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const updatedNote: Note = {
       id: note?.id || '',
       title: title.trim(),
@@ -61,7 +60,7 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ isOpen, note, onClose, onSave }
       isChecklist: note?.isChecklist,
       checklistItems: note?.checklistItems,
     };
-    
+
     onSave(updatedNote);
   };
 
@@ -77,17 +76,17 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ isOpen, note, onClose, onSave }
 
     try {
       setIsGeneratingTitleAndTags(true);
-      
+
       const result = await generateNoteTitleAndTags(content);
-      
+
       if (result.title) {
         setTitle(result.title);
       }
-      
+
       if (result.tags && result.tags.length > 0) {
         setTags(result.tags);
       }
-      
+
       toast({
         title: "AI Suggestions",
         description: "Generated title and tags based on your note content"
@@ -126,7 +125,7 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ isOpen, note, onClose, onSave }
           <DialogHeader>
             <DialogTitle>{note ? 'Edit Note' : 'Create Note'}</DialogTitle>
           </DialogHeader>
-          
+
           <NoteForm
             title={title}
             content={content}
@@ -138,7 +137,7 @@ const NoteEditor: React.FC<NoteEditorProps> = ({ isOpen, note, onClose, onSave }
             onAddTag={addTag}
             onGenerateTitleAndTags={handleGenerateTitleAndTags}
           />
-          
+
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel

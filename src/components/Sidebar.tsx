@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
   const location = useLocation();
   const isMobile = useIsMobile();
-  
+
   const navItems = [
     { icon: Home, label: "Dashboard", path: "/dashboard" },
     { icon: CheckSquare, label: "Tasks", path: "/tasks" },
@@ -29,20 +28,20 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
 
   return (
     <>
-      {/* Mobile backdrop */}
+
       {isMobile && !collapsed && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setCollapsed(true)}
         />
       )}
-      
-      <aside 
+
+      <aside
         className={cn(
           "bg-white dark:bg-gray-800 h-screen border-r border-gray-200 dark:border-gray-700 transition-all duration-300 z-50",
-          // Mobile: fixed positioning with overlay behavior
+
           isMobile ? "fixed left-0 top-0" : "relative",
-          // Width based on collapsed state
+
           collapsed ? (isMobile ? "-translate-x-full" : "w-16") : "w-64"
         )}
       >
@@ -56,9 +55,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
             <img src={prodigyLogo} alt="PRODIGY" className="h-full" />
           </div>
         )}
-        <Button 
-          variant="ghost" 
-          size="icon" 
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={() => setCollapsed(!collapsed)}
           className={cn(collapsed ? "ml-auto" : "")}
         >

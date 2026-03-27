@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -12,19 +11,18 @@ import { updateUserSettings } from '@/services/userService';
 const AppearanceSettings: React.FC = () => {
   const { theme, setTheme } = useTheme();
 
-  // Handle dark mode toggle
   const handleThemeToggle = async () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
     try {
       const user = getCurrentUser();
       if (!user) return;
-      
+
       await updateUserSettings(user.uid, { theme: newTheme });
       toast.success(`${newTheme === 'light' ? 'Light' : 'Dark'} mode activated`);
     } catch (error) {
       console.error("Error updating theme:", error);
-      // Theme still changes locally even if the API call fails
+
     }
   };
 
@@ -47,9 +45,9 @@ const AppearanceSettings: React.FC = () => {
             </div>
             <div className="flex items-center gap-2">
               <Sun size={18} className={`${theme === 'light' ? 'text-[#D2353E]' : 'text-muted-foreground'}`} />
-              <Switch 
-                id="dark-mode" 
-                checked={theme === 'dark'} 
+              <Switch
+                id="dark-mode"
+                checked={theme === 'dark'}
                 onCheckedChange={handleThemeToggle}
               />
               <Moon size={18} className={`${theme === 'dark' ? 'text-[#D2353E]' : 'text-muted-foreground'}`} />

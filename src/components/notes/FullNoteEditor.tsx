@@ -25,8 +25,7 @@ const FullNoteEditor: React.FC = () => {
   const [checklistItems, setChecklistItems] = useState<ChecklistItemData[]>([]);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-  
-  // AI States
+
   const [summarizeLoading, setSummarizeLoading] = useState(false);
   const [askAILoading, setAskAILoading] = useState(false);
   const [generateLoading, setGenerateLoading] = useState(false);
@@ -43,7 +42,7 @@ const FullNoteEditor: React.FC = () => {
     bullets: string[];
     formal: string;
   } | null>(null);
-  
+
   const textareaRef = React.useRef<HTMLTextAreaElement | null>(null);
   const autoSaveTimerRef = React.useRef<NodeJS.Timeout | null>(null);
   const [isDirty, setIsDirty] = useState(false);
@@ -52,7 +51,7 @@ const FullNoteEditor: React.FC = () => {
   useEffect(() => {
     if (id) {
       setLoading(true);
-      
+
       const fetchNote = async () => {
         try {
           const note = await getNoteById(id);
@@ -73,27 +72,25 @@ const FullNoteEditor: React.FC = () => {
           setLoading(false);
         }
       };
-      
+
       fetchNote();
     } else {
       setLoading(false);
     }
   }, [id, navigate, toast]);
 
-  // Calculate word count and reading time
   useEffect(() => {
     const words = content.trim().split(/\s+/).filter(word => word.length > 0).length;
     setWordCount(words);
     setReadingTime(Math.ceil(words / 200));
   }, [content]);
 
-  // Auto-save effect
   useEffect(() => {
     if (isDirty && id) {
       if (autoSaveTimerRef.current) {
         clearTimeout(autoSaveTimerRef.current);
       }
-      
+
       autoSaveTimerRef.current = setTimeout(async () => {
         try {
           await updateNote(id, {
@@ -110,7 +107,7 @@ const FullNoteEditor: React.FC = () => {
         }
       }, 3000);
     }
-    
+
     return () => {
       if (autoSaveTimerRef.current) {
         clearTimeout(autoSaveTimerRef.current);
@@ -153,23 +150,22 @@ const FullNoteEditor: React.FC = () => {
           isChecklist,
           checklistItems
         });
-        
+
         setIsDirty(false);
         setLastSaved(new Date());
-        
-        // Create activity
+
         await createNoteActivity(
           'Note updated',
           `"${title}" was updated`,
           id
         );
-        
+
         toast({
           title: "Note updated",
           description: "Your note has been updated successfully."
         });
       }
-      
+
       navigate('/notes');
     } catch (error) {
       toast({
@@ -182,15 +178,15 @@ const FullNoteEditor: React.FC = () => {
 
   const insertFormatting = (formatType: string) => {
     if (!textareaRef.current) return;
-    
+
     const textarea = textareaRef.current;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selectedText = content.substring(start, end);
-    
+
     let formattedText = '';
     let cursorOffset = 0;
-    
+
     switch (formatType) {
       case 'bold':
         formattedText = `**${selectedText}**`;
@@ -218,15 +214,15 @@ const FullNoteEditor: React.FC = () => {
       default:
         return;
     }
-    
-    const newContent = 
-      content.substring(0, start) + 
-      formattedText + 
+
+    const newContent =
+      content.substring(0, start) +
+      formattedText +
       content.substring(end);
-    
+
     setContent(newContent);
     setIsDirty(true);
-    
+
     setTimeout(() => {
       textarea.focus();
       if (selectedText.length === 0) {
@@ -272,7 +268,7 @@ const FullNoteEditor: React.FC = () => {
       });
       return;
     }
-    
+
     setAiQuestion('');
     setAiResponse('');
     setAiDialogOpen(true);
@@ -315,19 +311,19 @@ const FullNoteEditor: React.FC = () => {
 
     try {
       setGenerateLoading(true);
-      
+
       const result = await generateNoteTitleAndTags(content);
-      
+
       if (result.title) {
         setTitle(result.title);
         setIsDirty(true);
       }
-      
+
       if (result.tags && result.tags.length > 0) {
         setTags(result.tags);
         setIsDirty(true);
       }
-      
+
       toast({
         title: "AI Suggestions",
         description: "Generated title and tags based on your note content"
@@ -387,7 +383,7 @@ const FullNoteEditor: React.FC = () => {
       .replace(/_(.*?)_/g, '<em class="italic">$1</em>')
       .replace(/^- (.*$)/gm, '<li class="ml-4">• $1</li>')
       .replace(/\n/g, '<br>');
-    
+
     return html;
   };
 

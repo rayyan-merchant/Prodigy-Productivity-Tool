@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Dialog,
@@ -41,7 +40,7 @@ const AIAssistantDialog: React.FC<AIAssistantDialogProps> = ({
             AI Assistant
           </DialogTitle>
         </DialogHeader>
-        
+
         <div className="space-y-4 py-4">
           <div className="flex gap-2">
             <Input
@@ -51,14 +50,14 @@ const AIAssistantDialog: React.FC<AIAssistantDialogProps> = ({
               disabled={loading}
               className="flex-1"
             />
-            <Button 
+            <Button
               onClick={onSubmit}
               disabled={loading || !question.trim()}
             >
               {loading ? "Processing..." : "Ask"}
             </Button>
           </div>
-          
+
           {response && (
             <div className="mt-4">
               <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
@@ -80,7 +79,7 @@ const AIAssistantDialog: React.FC<AIAssistantDialogProps> = ({
             </div>
           )}
         </div>
-        
+
         <DialogFooter>
           <Button onClick={() => onOpenChange(false)}>Close</Button>
         </DialogFooter>

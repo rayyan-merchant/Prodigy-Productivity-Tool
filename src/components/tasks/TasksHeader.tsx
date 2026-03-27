@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Plus, ListFilter, Loader2 } from "lucide-react";
@@ -25,9 +24,9 @@ const TasksHeader: React.FC<TasksHeaderProps> = ({
         <p className="text-muted-foreground">Manage and track your tasks</p>
       </div>
       <div className="flex gap-2">
-        <Button 
-          variant="outline" 
-          className="gap-1" 
+        <Button
+          variant="outline"
+          className="gap-1"
           onClick={onPrioritize}
           disabled={isPrioritizing || isLoading || disablePrioritize}
         >

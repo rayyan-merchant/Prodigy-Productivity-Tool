@@ -1,4 +1,3 @@
-
 import React from 'react';
 import NoteCard from './NoteCard';
 import { Note, Folder } from '@/types/notes';
@@ -12,13 +11,13 @@ interface NotesListProps {
   onUpdateNote: (id: string, updates: Partial<Note>) => void;
 }
 
-const NotesList: React.FC<NotesListProps> = ({ 
-  notes, 
-  folders, 
-  onEditNote, 
-  onDeleteNote, 
-  onToggleFavorite, 
-  onUpdateNote 
+const NotesList: React.FC<NotesListProps> = ({
+  notes,
+  folders,
+  onEditNote,
+  onDeleteNote,
+  onToggleFavorite,
+  onUpdateNote
 }) => {
   const getFolderName = (folderId?: string) => {
     if (!folderId) return undefined;

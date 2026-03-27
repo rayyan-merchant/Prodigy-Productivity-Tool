@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
   Dialog,
@@ -39,7 +38,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ isOpen, onClose, onSave, goal }) =>
         targetValue: goal.targetValue,
         unit: goal.unit,
         category: goal.category,
-        deadline: goal.deadline.split('T')[0] // Format for date input
+        deadline: goal.deadline.split('T')[0]
       });
     } else {
       setFormData({
@@ -65,7 +64,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ isOpen, onClose, onSave, goal }) =>
           <DialogHeader>
             <DialogTitle>{goal ? 'Edit Goal' : 'Create New Goal'}</DialogTitle>
           </DialogHeader>
-          
+
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
               <Label htmlFor="title">Title</Label>
@@ -77,7 +76,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ isOpen, onClose, onSave, goal }) =>
                 required
               />
             </div>
-            
+
             <div className="grid gap-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
@@ -101,7 +100,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ isOpen, onClose, onSave, goal }) =>
                   required
                 />
               </div>
-              
+
               <div className="grid gap-2">
                 <Label htmlFor="unit">Unit</Label>
                 <Input
@@ -144,7 +143,7 @@ const GoalForm: React.FC<GoalFormProps> = ({ isOpen, onClose, onSave, goal }) =>
               />
             </div>
           </div>
-          
+
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel

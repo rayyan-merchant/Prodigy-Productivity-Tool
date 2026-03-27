@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { cn } from "@/lib/utils";
@@ -20,8 +19,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Sidebar collapsed={collapsed || isMobile} setCollapsed={setCollapsed} />
       <main className={cn(
         "flex-1 transition-all duration-300 overflow-auto",
-        // On mobile, sidebar is overlay so no margin needed
-        // On desktop, adjust margin based on collapsed state
+
         isMobile ? "ml-0" : collapsed ? "ml-16" : "ml-64"
       )}>
         {children || <Outlet />}

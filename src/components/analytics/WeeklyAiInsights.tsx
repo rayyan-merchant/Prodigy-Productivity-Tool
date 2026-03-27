@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,8 +12,8 @@ interface WeeklyAiInsightsProps {
   sessionsCompleted: number;
 }
 
-const WeeklyAiInsights: React.FC<WeeklyAiInsightsProps> = ({ 
-  completedTasks, 
+const WeeklyAiInsights: React.FC<WeeklyAiInsightsProps> = ({
+  completedTasks,
   focusHours,
   sessionsCompleted
 }) => {
@@ -22,29 +21,28 @@ const WeeklyAiInsights: React.FC<WeeklyAiInsightsProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [hasAttemptedGeneration, setHasAttemptedGeneration] = useState(false);
   const { toast } = useToast();
-  
-  // Auto-generate insights if we have data
+
   useEffect(() => {
     const shouldGenerate = completedTasks > 0 || focusHours > 0;
-    
+
     if (shouldGenerate && !hasAttemptedGeneration) {
       generateInsights();
       setHasAttemptedGeneration(true);
     }
   }, [completedTasks, focusHours]);
-  
+
   const generateInsights = async () => {
     if (isGenerating) return;
-    
+
     try {
       setIsGenerating(true);
-      
+
       const result = await generateWeeklyInsights({
         completedTasks,
         focusHours,
         sessionsCompleted
       });
-      
+
       setInsight(result);
     } catch (error) {
       console.error("Error generating insights:", error);
@@ -62,8 +60,8 @@ const WeeklyAiInsights: React.FC<WeeklyAiInsightsProps> = ({
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Weekly AI Insights</CardTitle>
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           size="sm"
           onClick={generateInsights}
           disabled={isGenerating || (completedTasks === 0 && focusHours === 0)}

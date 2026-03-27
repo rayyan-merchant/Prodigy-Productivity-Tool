@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-  Wand, 
-  FileText, 
-  MessageSquare, 
+import {
+  Wand,
+  FileText,
+  MessageSquare,
   Lightbulb,
   Search,
   BookOpen,
@@ -47,8 +46,8 @@ const AIFeaturesSidebar: React.FC<AIFeaturesSidebarProps> = ({
             AI Features
           </h3>
           <div className="space-y-3">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="w-full justify-start"
               onClick={onSummarize}
               disabled={summarizeLoading || !hasContent}
@@ -56,8 +55,8 @@ const AIFeaturesSidebar: React.FC<AIFeaturesSidebarProps> = ({
               <FileText className="h-4 w-4 mr-2" />
               {summarizeLoading ? "Summarizing..." : "Summarize"}
             </Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="w-full justify-start"
               onClick={onAskAI}
               disabled={askAILoading || !hasContent}
@@ -65,8 +64,8 @@ const AIFeaturesSidebar: React.FC<AIFeaturesSidebarProps> = ({
               <MessageSquare className="h-4 w-4 mr-2" />
               AI Assistant
             </Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="w-full justify-start"
               onClick={onGenerateTitleAndTags}
               disabled={generateLoading || !hasContent}
@@ -85,16 +84,16 @@ const AIFeaturesSidebar: React.FC<AIFeaturesSidebarProps> = ({
             Quick Actions
           </h3>
           <div className="space-y-3">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="w-full justify-start"
               onClick={onBackToNotes}
             >
               <BookOpen className="h-4 w-4 mr-2" />
               Back to Notes
             </Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="w-full justify-start"
               onClick={onCopyContent}
             >

@@ -1,4 +1,3 @@
-
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { getCurrentUser } from '@/lib/auth';
@@ -29,7 +28,6 @@ const DEFAULT_SETTINGS: PomodoroSettings = {
   notifications: true
 };
 
-// Get user's pomodoro settings
 export const getPomodoroSettings = async (): Promise<PomodoroSettings> => {
   try {
     const user = getCurrentUser();
@@ -37,7 +35,7 @@ export const getPomodoroSettings = async (): Promise<PomodoroSettings> => {
 
     const settingsRef = doc(db, 'users', user.uid, 'settings', 'pomodoro');
     const settingsDoc = await getDoc(settingsRef);
-    
+
     if (settingsDoc.exists()) {
       const data = settingsDoc.data();
       return {
@@ -47,7 +45,7 @@ export const getPomodoroSettings = async (): Promise<PomodoroSettings> => {
         updatedAt: data.updatedAt?.toDate?.()?.toISOString() || data.updatedAt
       };
     } else {
-      // Create default settings
+
       return await savePomodoroSettings(DEFAULT_SETTINGS);
     }
   } catch (error) {
@@ -56,7 +54,6 @@ export const getPomodoroSettings = async (): Promise<PomodoroSettings> => {
   }
 };
 
-// Save user's pomodoro settings
 export const savePomodoroSettings = async (settings: Partial<PomodoroSettings>): Promise<PomodoroSettings> => {
   try {
     const user = getCurrentUser();
@@ -64,23 +61,20 @@ export const savePomodoroSettings = async (settings: Partial<PomodoroSettings>):
 
     const settingsRef = doc(db, 'users', user.uid, 'settings', 'pomodoro');
     const now = serverTimestamp();
-    
-    // Create the data object for Firestore (without createdAt/updatedAt from settings)
+
     const { createdAt, updatedAt, ...settingsWithoutTimestamps } = settings;
     const firestoreData: any = {
       ...settingsWithoutTimestamps,
       updatedAt: now
     };
 
-    // If this is the first time saving, add createdAt
     const existingDoc = await getDoc(settingsRef);
     if (!existingDoc.exists()) {
       firestoreData.createdAt = now;
     }
 
     await setDoc(settingsRef, firestoreData, { merge: true });
-    
-    // Return the settings with string timestamps for the interface
+
     const currentTime = new Date().toISOString();
     return {
       ...DEFAULT_SETTINGS,

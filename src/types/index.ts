@@ -1,8 +1,6 @@
-
 import { Task } from './tasks';
 import { Note } from './notes';
 
-// UnifiedTask interface is use for compatibility where needed
 export interface UnifiedTask {
   id: string;
   title: string;
@@ -19,5 +17,4 @@ export interface UnifiedTask {
   completedAt?: Date;
 }
 
-// Export Task interface from tasks.ts
 export type { Task } from './tasks';

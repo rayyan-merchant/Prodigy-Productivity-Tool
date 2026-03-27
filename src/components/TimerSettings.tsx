@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -12,13 +11,13 @@ interface TimerSettingsProps {
 
 const TimerSettings: React.FC<TimerSettingsProps> = ({ onClose }) => {
   const { settings, updateSettings } = useTimer();
-  
+
   const [workDuration, setWorkDuration] = useState(settings.workDuration);
   const [shortBreakDuration, setShortBreakDuration] = useState(settings.shortBreakDuration);
   const [longBreakDuration, setLongBreakDuration] = useState(settings.longBreakDuration);
   const [longBreakInterval, setLongBreakInterval] = useState(settings.longBreakInterval);
   const [isSaving, setIsSaving] = useState(false);
-  
+
   const handleSaveSettings = async () => {
     try {
       setIsSaving(true);
@@ -28,7 +27,7 @@ const TimerSettings: React.FC<TimerSettingsProps> = ({ onClose }) => {
         longBreakDuration,
         longBreakInterval
       });
-      
+
       toast.success('Settings saved successfully!');
       onClose();
     } catch (error) {
@@ -38,7 +37,7 @@ const TimerSettings: React.FC<TimerSettingsProps> = ({ onClose }) => {
       setIsSaving(false);
     }
   };
-  
+
   return (
     <div className="space-y-6 py-4">
       <div className="space-y-4">
@@ -56,7 +55,7 @@ const TimerSettings: React.FC<TimerSettingsProps> = ({ onClose }) => {
             onValueChange={(value) => setWorkDuration(value[0])}
           />
         </div>
-        
+
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <Label htmlFor="short-break">Short Break: {shortBreakDuration} minutes</Label>
@@ -71,7 +70,7 @@ const TimerSettings: React.FC<TimerSettingsProps> = ({ onClose }) => {
             onValueChange={(value) => setShortBreakDuration(value[0])}
           />
         </div>
-        
+
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <Label htmlFor="long-break">Long Break: {longBreakDuration} minutes</Label>
@@ -86,7 +85,7 @@ const TimerSettings: React.FC<TimerSettingsProps> = ({ onClose }) => {
             onValueChange={(value) => setLongBreakDuration(value[0])}
           />
         </div>
-        
+
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <Label htmlFor="long-break-interval">Long Break After: {longBreakInterval} sessions</Label>
@@ -102,7 +101,7 @@ const TimerSettings: React.FC<TimerSettingsProps> = ({ onClose }) => {
           />
         </div>
       </div>
-      
+
       <div className="flex justify-end space-x-2">
         <Button variant="outline" onClick={onClose} disabled={isSaving}>
           Cancel

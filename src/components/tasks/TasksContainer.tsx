@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Task } from "@/types/tasks";
 import { toast } from "sonner";
@@ -47,7 +46,6 @@ const TasksContainer: React.FC<TasksContainerProps> = ({ children }) => {
   const [isPrioritizing, setIsPrioritizing] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Listen for keyboard shortcut events
   useEffect(() => {
     const handleCreateTask = () => {
       setIsDialogOpen(true);
@@ -61,20 +59,20 @@ const TasksContainer: React.FC<TasksContainerProps> = ({ children }) => {
     try {
       setIsRefreshing(true);
       let fetchedTasks: Task[];
-      
+
       if (activeTab === "all") {
         fetchedTasks = await getTasks();
       } else {
         fetchedTasks = await getTasksByStatus(activeTab as Task['status']);
       }
-      
+
       setTasks(fetchedTasks);
-      
+
       if (fetchedTasks.length === 0 && !isLoading) {
         setTimeout(async () => {
           try {
-            const retryTasks = activeTab === "all" 
-              ? await getTasks() 
+            const retryTasks = activeTab === "all"
+              ? await getTasks()
               : await getTasksByStatus(activeTab as Task['status']);
             setTasks(retryTasks);
           } catch (retryError) {
@@ -107,7 +105,7 @@ const TasksContainer: React.FC<TasksContainerProps> = ({ children }) => {
     try {
       const user = getCurrentUser();
       const userId = user?.uid || 'anonymous';
-      
+
       const newTask = {
         title: values.title,
         description: values.description,
@@ -118,7 +116,7 @@ const TasksContainer: React.FC<TasksContainerProps> = ({ children }) => {
         completed: false,
         userId: userId
       };
-      
+
       await addTask(newTask);
       toast.success("Task created successfully");
       setIsDialogOpen(false);
@@ -131,13 +129,13 @@ const TasksContainer: React.FC<TasksContainerProps> = ({ children }) => {
 
   const handleEditTask = async (values: any) => {
     if (!selectedTask) return;
-    
+
     try {
       const updatedTask = {
         ...values,
         tags: values.tags?.split(',').map((tag: string) => tag.trim()) || selectedTask.tags
       };
-      
+
       await updateTask(selectedTask.id, updatedTask);
       toast.success("Task updated successfully");
       setSelectedTask(null);
@@ -162,7 +160,7 @@ const TasksContainer: React.FC<TasksContainerProps> = ({ children }) => {
 
   const handleDeleteTask = async () => {
     if (!taskToDelete) return;
-    
+
     try {
       await deleteTask(taskToDelete);
       toast.success("Task deleted successfully");
@@ -191,35 +189,35 @@ const TasksContainer: React.FC<TasksContainerProps> = ({ children }) => {
 
   const handlePrioritizeTasks = async () => {
     const tasksToOrder = tasks.filter(task => task.status !== 'completed');
-    
+
     if (tasksToOrder.length < 2) {
       toast.info("Need at least two tasks to prioritize");
       return;
     }
-    
+
     try {
       setIsPrioritizing(true);
       toast.loading("AI is prioritizing your tasks...");
-      
+
       const prioritizedTaskIds = await prioritizeTasks(tasksToOrder);
-      
+
       if (prioritizedTaskIds && prioritizedTaskIds.length) {
         const taskMap = tasks.reduce((acc, task) => {
           acc[task.id] = task;
           return acc;
         }, {} as Record<string, Task>);
-        
+
         let order = 0;
         for (const taskId of prioritizedTaskIds) {
           const task = taskMap[taskId];
           if (task) {
-            await updateTask(taskId, { 
+            await updateTask(taskId, {
               priority: order < 3 ? 'high' : order < 6 ? 'medium' : 'low'
             });
             order++;
           }
         }
-        
+
         toast.success("Tasks prioritized successfully");
         fetchTasks();
       }

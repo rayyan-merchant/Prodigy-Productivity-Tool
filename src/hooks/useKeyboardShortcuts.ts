@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -15,7 +14,7 @@ export const useKeyboardShortcuts = () => {
   const navigate = useNavigate();
 
   const shortcuts: KeyboardShortcut[] = [
-    // Navigation shortcuts
+
     {
       key: 'Alt+1',
       action: () => navigate('/dashboard'),
@@ -64,33 +63,33 @@ export const useKeyboardShortcuts = () => {
       description: 'Go to Settings',
       category: 'Navigation'
     },
-    // Task shortcuts
+
     {
       key: 'Alt+t',
       action: () => {
-        // Trigger task creation if on tasks page
+
         const event = new CustomEvent('createTask');
         window.dispatchEvent(event);
       },
       description: 'Create new task',
       category: 'Tasks'
     },
-    // Note shortcuts
+
     {
       key: 'Alt+n',
       action: () => {
-        // Trigger note creation
+
         const event = new CustomEvent('createNote');
         window.dispatchEvent(event);
       },
       description: 'Create new note',
       category: 'Notes'
     },
-    // Pomodoro shortcuts
+
     {
       key: 'Alt+p',
       action: () => {
-        // Toggle pomodoro timer
+
         const event = new CustomEvent('togglePomodoro');
         window.dispatchEvent(event);
       },
@@ -100,18 +99,18 @@ export const useKeyboardShortcuts = () => {
     {
       key: 'Alt+r',
       action: () => {
-        // Reset pomodoro timer
+
         const event = new CustomEvent('resetPomodoro');
         window.dispatchEvent(event);
       },
       description: 'Reset Pomodoro timer',
       category: 'Pomodoro'
     },
-    // Search shortcuts
+
     {
       key: 'Alt+/',
       action: () => {
-        // Focus search input
+
         const searchInput = document.querySelector('input[type="search"]') as HTMLInputElement;
         if (searchInput) {
           searchInput.focus();
@@ -122,7 +121,7 @@ export const useKeyboardShortcuts = () => {
       description: 'Focus search bar',
       category: 'General'
     },
-    // Theme toggle - changed to Alt+D (shorter)
+
     {
       key: 'Alt+d',
       action: () => {
@@ -132,7 +131,7 @@ export const useKeyboardShortcuts = () => {
       description: 'Toggle dark/light theme',
       category: 'General'
     },
-    // Help
+
     {
       key: 'Alt+h',
       action: () => {
@@ -147,8 +146,7 @@ export const useKeyboardShortcuts = () => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const { key, altKey, shiftKey, ctrlKey, metaKey } = event;
-      
-      // Don't trigger shortcuts when typing in inputs
+
       const target = event.target as HTMLElement;
       if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.contentEditable === 'true') {
         return;
@@ -162,7 +160,7 @@ export const useKeyboardShortcuts = () => {
         const needsCtrl = shortcutParts.includes('Ctrl');
         const needsMeta = shortcutParts.includes('Meta');
 
-        const keyMatches = key.toLowerCase() === mainKey || 
+        const keyMatches = key.toLowerCase() === mainKey ||
                           (mainKey === '/' && key === '/') ||
                           (mainKey >= '1' && mainKey <= '8' && key === mainKey);
 
@@ -171,7 +169,7 @@ export const useKeyboardShortcuts = () => {
             shiftKey === needsShift &&
             ctrlKey === needsCtrl &&
             metaKey === needsMeta) {
-          
+
           if (shortcut.preventDefault !== false) {
             event.preventDefault();
           }

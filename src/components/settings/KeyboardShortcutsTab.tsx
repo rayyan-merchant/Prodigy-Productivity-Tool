@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,13 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { 
-  Search, 
-  Keyboard, 
-  Navigation, 
-  CheckSquare, 
-  FileText, 
-  Timer, 
+import {
+  Search,
+  Keyboard,
+  Navigation,
+  CheckSquare,
+  FileText,
+  Timer,
   Lightbulb,
   Download,
   Settings
@@ -83,7 +82,6 @@ const KeyboardShortcutsTab: React.FC = () => {
         </Button>
       </div>
 
-      {/* Pro Tips Card */}
       <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 border-blue-200 dark:border-blue-800">
         <CardContent className="p-4">
           <div className="flex items-start gap-3">
@@ -103,7 +101,6 @@ const KeyboardShortcutsTab: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Search and Filter */}
       <div className="flex gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -116,7 +113,6 @@ const KeyboardShortcutsTab: React.FC = () => {
         </div>
       </div>
 
-      {/* Categories and Shortcuts */}
       <Tabs value={activeCategory} onValueChange={setActiveCategory}>
         <TabsList className="grid grid-cols-6 w-full">
           {categories.map((category) => {
@@ -179,7 +175,6 @@ const KeyboardShortcutsTab: React.FC = () => {
         ))}
       </Tabs>
 
-      {/* Quick Reference Card */}
       <Card className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/50 dark:to-emerald-950/50 border-green-200 dark:border-green-800">
         <CardHeader>
           <CardTitle className="text-green-900 dark:text-green-100 flex items-center gap-2">

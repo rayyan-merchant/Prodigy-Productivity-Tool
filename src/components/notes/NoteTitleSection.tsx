@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -35,7 +34,7 @@ const NoteTitleSection: React.FC<NoteTitleSectionProps> = ({
           onChange={onTitleChange}
           className="text-2xl font-semibold flex-1"
         />
-        <Button 
+        <Button
           variant="outline"
           onClick={onGenerateTitleAndTags}
           disabled={generateLoading || !hasContent}
@@ -51,9 +50,9 @@ const NoteTitleSection: React.FC<NoteTitleSectionProps> = ({
           {tags.map(tag => (
             <Badge key={tag} variant="secondary" className="px-3 py-1">
               {tag}
-              <button 
-                type="button" 
-                onClick={() => onTagRemove(tag)} 
+              <button
+                type="button"
+                onClick={() => onTagRemove(tag)}
                 className="ml-2 hover:text-destructive focus:outline-none"
               >
                 ×

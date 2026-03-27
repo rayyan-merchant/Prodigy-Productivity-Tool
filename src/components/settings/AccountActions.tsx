@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 const AccountActions: React.FC = () => {
   const navigate = useNavigate();
 
-  // Handle sign out
   const handleSignOut = async () => {
     try {
       const signOutPromise = logout();
@@ -33,8 +31,8 @@ const AccountActions: React.FC = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Button 
-          variant="destructive" 
+        <Button
+          variant="destructive"
           onClick={handleSignOut}
           className="bg-[#D2353E] hover:bg-[#D2353E]/90 flex items-center gap-2"
         >

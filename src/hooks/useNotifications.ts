@@ -1,6 +1,5 @@
-
 import { useEffect, useCallback } from 'react';
-import { 
+import {
   requestNotificationPermission,
   sendPomodoroNotification,
   sendGoalMotivationNotification,
@@ -12,36 +11,34 @@ import {
 import { getTasks } from '@/services/taskService';
 
 export const useNotifications = () => {
-  // Initialize notifications on mount
+
   useEffect(() => {
     const initNotifications = async () => {
       if (getNotificationsEnabled()) {
         await requestNotificationPermission();
       }
     };
-    
+
     initNotifications();
   }, []);
 
-  // Random motivational notifications (every 2-4 hours during work hours)
   useEffect(() => {
     if (!getNotificationsEnabled()) return;
 
     const scheduleRandomNotifications = () => {
       const now = new Date();
       const hour = now.getHours();
-      
-      // Only during work hours (9 AM - 6 PM)
+
       if (hour >= 9 && hour <= 18) {
-        // Random interval between 2-4 hours (in milliseconds)
+
         const randomInterval = (2 + Math.random() * 2) * 60 * 60 * 1000;
-        
+
         setTimeout(() => {
           sendMotivationalNotification();
-          scheduleRandomNotifications(); // Schedule next one
+          scheduleRandomNotifications();
         }, randomInterval);
       } else {
-        // Check again in an hour if outside work hours
+
         setTimeout(scheduleRandomNotifications, 60 * 60 * 1000);
       }
     };
@@ -49,7 +46,6 @@ export const useNotifications = () => {
     scheduleRandomNotifications();
   }, []);
 
-  // Check for deadline reminders (runs every hour)
   useEffect(() => {
     if (!getNotificationsEnabled()) return;
 
@@ -57,14 +53,13 @@ export const useNotifications = () => {
       try {
         const tasks = await getTasks();
         const now = new Date();
-        
+
         tasks.forEach(task => {
           if (task.dueDate && task.status !== 'completed') {
             const dueDate = new Date(task.dueDate);
             const timeDiff = dueDate.getTime() - now.getTime();
             const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            
-            // Send reminder for tasks due in 1, 3, or 7 days
+
             if (daysLeft === 1 || daysLeft === 3 || daysLeft === 7) {
               sendDeadlineReminderNotification(task.title, daysLeft);
             }
@@ -75,14 +70,12 @@ export const useNotifications = () => {
       }
     };
 
-    // Check immediately, then every hour
     checkDeadlines();
     const interval = setInterval(checkDeadlines, 60 * 60 * 1000);
-    
+
     return () => clearInterval(interval);
   }, []);
 
-  // Pomodoro notification handlers
   const notifyPomodoroStart = useCallback(() => {
     if (getNotificationsEnabled()) {
       sendPomodoroNotification('session_start');
@@ -107,7 +100,6 @@ export const useNotifications = () => {
     }
   }, []);
 
-  // Goal and habit notification handlers
   const notifyGoalProgress = useCallback((goalTitle: string, progress: number) => {
     if (getNotificationsEnabled()) {
       sendGoalMotivationNotification(goalTitle, progress);

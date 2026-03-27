@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,7 +16,7 @@ const ActiveSessionInfo: React.FC<ActiveSessionInfoProps> = ({
   setQuickNote
 }) => {
   const displayFocus = focusType === 'Custom' ? customFocus : focusType;
-  
+
   return (
     <>
       <Card className="bg-white/10 border-white/20 backdrop-blur-sm text-white">

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -14,7 +13,7 @@ export const useSupabaseAI = () => {
   const [error, setError] = useState<string | null>(null);
 
   const callAI = async (
-    prompt: string, 
+    prompt: string,
     type: string = 'general',
     context?: any,
     maxTokens: number = 1000
@@ -24,7 +23,7 @@ export const useSupabaseAI = () => {
       setError(null);
 
       console.log('Calling Supabase AI with prompt:', prompt);
-      
+
       const { data, error: supabaseError } = await supabase.functions.invoke('ai-service', {
         body: {
           prompt,
@@ -42,7 +41,7 @@ export const useSupabaseAI = () => {
       console.log('Supabase AI response received:', data);
 
       const response = data as AIResponse;
-      
+
       if (!response.success) {
         throw new Error(response.error || 'AI service returned an error');
       }

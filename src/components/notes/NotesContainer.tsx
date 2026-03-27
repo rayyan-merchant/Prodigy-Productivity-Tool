@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Note, Folder, SearchFilters } from '@/types/notes';
 import { getNotes, createNote, updateNote, deleteNote } from '@/services/noteService';
@@ -50,7 +49,6 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
-  // Listen for keyboard shortcut events
   useEffect(() => {
     const handleCreateNoteFromShortcut = () => {
       handleCreateNote();
@@ -60,7 +58,6 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ children }) => {
     return () => window.removeEventListener('createNoteFromShortcut', handleCreateNoteFromShortcut);
   }, []);
 
-  // Mock folders for demo
   useEffect(() => {
     const mockFolders: Folder[] = [
       {
@@ -103,7 +100,7 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ children }) => {
     if (user) {
       fetchNotes();
     } else {
-      // Mock data for preview
+
       const mockNotes: Note[] = [
         {
           id: '1',
@@ -130,7 +127,7 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ children }) => {
           isLocked: false
         }
       ];
-      
+
       setNotes(mockNotes);
       setIsLoading(false);
     }
@@ -154,30 +151,30 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ children }) => {
           content: note.content,
           tags: note.tags
         });
-        
-        const updatedNotes = notes.map(n => 
+
+        const updatedNotes = notes.map(n =>
           n.id === note.id ? { ...note, updatedAt: new Date().toISOString() } : n
         );
         setNotes(updatedNotes);
-        
+
         toast({
           title: "Note updated",
           description: "Your note has been updated successfully."
         });
       } else {
         const { title, content, tags } = note;
-        const newNote = await createNote({ 
-          title, 
-          content, 
+        const newNote = await createNote({
+          title,
+          content,
           tags: tags || [],
           folderId: selectedFolderId,
           isFavorite: false,
           isEncrypted: false,
           isLocked: false
         });
-        
+
         setNotes([newNote, ...notes]);
-        
+
         toast({
           title: "Note created",
           description: "Your note has been created successfully."
@@ -219,7 +216,7 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ children }) => {
       note.id === id ? { ...note, isFavorite: !note.isFavorite } : note
     );
     setNotes(updatedNotes);
-    
+
     toast({
       title: "Success",
       description: "Note favorite status updated"
@@ -271,20 +268,19 @@ const NotesContainer: React.FC<NotesContainerProps> = ({ children }) => {
     });
   };
 
-  // Advanced filtering logic
   const filteredNotes = notes.filter(note => {
-    const matchesSearch = !searchQuery || 
+    const matchesSearch = !searchQuery ||
       note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       note.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
       note.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
 
-    const matchesFolder = searchFilters.folderId ? 
-      note.folderId === searchFilters.folderId : 
+    const matchesFolder = searchFilters.folderId ?
+      note.folderId === searchFilters.folderId :
       (selectedFolderId ? note.folderId === selectedFolderId : true);
 
     const matchesFavorite = !searchFilters.isFavorite || note.isFavorite;
 
-    const matchesTags = !searchFilters.tags?.length || 
+    const matchesTags = !searchFilters.tags?.length ||
       searchFilters.tags.some(tag => note.tags?.includes(tag));
 
     const matchesDateRange = !searchFilters.dateRange || (

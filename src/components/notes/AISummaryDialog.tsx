@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Dialog,
@@ -31,7 +30,7 @@ const AISummaryDialog: React.FC<AISummaryDialogProps> = ({
         <DialogHeader>
           <DialogTitle>AI Note Summary</DialogTitle>
         </DialogHeader>
-        
+
         {summary && (
           <div className="space-y-4 py-4 max-h-[500px] overflow-y-auto">
             <div>
@@ -43,7 +42,7 @@ const AISummaryDialog: React.FC<AISummaryDialogProps> = ({
                 <p className="text-sm">{summary.tldr}</p>
               </div>
             </div>
-            
+
             <div>
               <h4 className="text-sm font-semibold mb-2">Key Points</h4>
               <ul className="list-disc pl-5 space-y-1 bg-muted/50 p-3 rounded">
@@ -52,7 +51,7 @@ const AISummaryDialog: React.FC<AISummaryDialogProps> = ({
                 ))}
               </ul>
             </div>
-            
+
             <div>
               <h4 className="text-sm font-semibold mb-2">Formal Summary</h4>
               <div className="bg-muted p-3 rounded">
@@ -61,7 +60,7 @@ const AISummaryDialog: React.FC<AISummaryDialogProps> = ({
             </div>
           </div>
         )}
-        
+
         <DialogFooter>
           <Button onClick={() => onOpenChange(false)}>Close</Button>
         </DialogFooter>

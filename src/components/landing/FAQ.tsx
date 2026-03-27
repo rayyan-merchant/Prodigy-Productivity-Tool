@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { ChevronDown } from 'lucide-react';
@@ -32,7 +31,7 @@ const FAQ = () => {
     <section className="py-16 bg-gray-50">
       <div className="container px-4 md:px-6">
         <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
-        
+
         <div className="max-w-3xl mx-auto space-y-4">
           {faqs.map((faq, index) => (
             <FAQItem key={index} question={faq.question} answer={faq.answer} />

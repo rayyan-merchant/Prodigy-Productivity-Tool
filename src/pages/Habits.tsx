@@ -49,7 +49,7 @@ const Habits: React.FC = () => {
         completedDates: [],
         isActive: true
       });
-      
+
       setHabits([newHabit, ...habits]);
       setIsCreateDialogOpen(false);
       toast.success('Habit created successfully!');
@@ -61,16 +61,16 @@ const Habits: React.FC = () => {
 
   const handleEditHabit = async (habitData: Partial<Habit>) => {
     if (!selectedHabit) return;
-    
+
     try {
       await updateHabit(selectedHabit.id, habitData);
-      
+
       const updatedHabit: Habit = {
         ...selectedHabit,
         ...habitData,
         updatedAt: new Date().toISOString()
       };
-      
+
       setHabits(habits.map(habit => habit.id === selectedHabit.id ? updatedHabit : habit));
       setIsEditDialogOpen(false);
       setSelectedHabit(null);
@@ -95,20 +95,20 @@ const Habits: React.FC = () => {
   const handleMarkComplete = async (habitId: string) => {
     const today = new Date().toISOString().split('T')[0];
     const habit = habits.find(h => h.id === habitId);
-    
+
     if (!habit || habit.completedDates.includes(today)) return;
-    
+
     try {
       const newStreak = habit.currentStreak + 1;
       const newLongestStreak = Math.max(habit.longestStreak, newStreak);
       const newCompletedDates = [...habit.completedDates, today];
-      
+
       await updateHabit(habitId, {
         currentStreak: newStreak,
         longestStreak: newLongestStreak,
         completedDates: newCompletedDates
       });
-      
+
       setHabits(habits.map(h => h.id === habitId ? {
         ...h,
         currentStreak: newStreak,
@@ -116,7 +116,7 @@ const Habits: React.FC = () => {
         completedDates: newCompletedDates,
         updatedAt: new Date().toISOString()
       } : h));
-      
+
       toast.success(`Great job! ${newStreak} day streak! 🔥`);
     } catch (error) {
       console.error('Error marking habit complete:', error);
@@ -127,14 +127,14 @@ const Habits: React.FC = () => {
   const handleMarkIncomplete = async (habitId: string) => {
     const habit = habits.find(h => h.id === habitId);
     if (!habit) return;
-    
+
     try {
       const newStreak = Math.max(0, habit.currentStreak - 1);
-      
+
       await updateHabit(habitId, {
         currentStreak: newStreak
       });
-      
+
       setHabits(habits.map(h => h.id === habitId ? {
         ...h,
         currentStreak: newStreak,
@@ -163,7 +163,7 @@ const Habits: React.FC = () => {
 
   return (
     <div className="p-6 space-y-6 animate-fade-in">
-      {/* Header */}
+
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Habits</h1>
@@ -177,7 +177,6 @@ const Habits: React.FC = () => {
         </Button>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardContent className="p-6">
@@ -190,7 +189,7 @@ const Habits: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
@@ -202,7 +201,7 @@ const Habits: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
@@ -216,7 +215,6 @@ const Habits: React.FC = () => {
         </Card>
       </div>
 
-      {/* Filters */}
       <div className="flex flex-wrap gap-2">
         {(['all', 'health', 'productivity', 'personal', 'learning', 'other'] as const).map((category) => (
           <Button
@@ -231,7 +229,6 @@ const Habits: React.FC = () => {
         ))}
       </div>
 
-      {/* Habits Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredHabits.map((habit) => (
           <HabitCard
@@ -264,7 +261,6 @@ const Habits: React.FC = () => {
         </div>
       )}
 
-      {/* Create Habit Dialog */}
       <HabitForm
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
@@ -272,7 +268,6 @@ const Habits: React.FC = () => {
         habit={null}
       />
 
-      {/* Edit Habit Dialog */}
       <HabitForm
         isOpen={isEditDialogOpen}
         onClose={() => {

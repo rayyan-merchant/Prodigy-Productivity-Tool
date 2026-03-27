@@ -1,11 +1,10 @@
-
 import { db } from '@/lib/firebase';
 import { collection, doc, addDoc, getDoc, getDocs, query, where, orderBy, serverTimestamp, Timestamp, limit, deleteDoc, updateDoc } from 'firebase/firestore';
 import { getCurrentUser } from '@/lib/auth';
 
 export interface PomodoroSession {
   id?: string;
-  duration: number;  // in minutes
+  duration: number;
   date: Date | string;
   type: 'focus' | 'short-break' | 'long-break';
   interruptions?: number;
@@ -13,28 +12,25 @@ export interface PomodoroSession {
   project?: string;
   tags?: string[];
   notes?: string;
-  taskId?: string;  // Link to task
-  taskTitle?: string; // Store task title for analytics
+  taskId?: string;
+  taskTitle?: string;
   userId?: string;
   createdAt?: Timestamp | Date;
 }
 
-/**
- * Save a new Pomodoro session to Firestore
- */
 export const saveSession = async (session: Omit<PomodoroSession, 'id' | 'createdAt'>): Promise<string> => {
   try {
     const user = getCurrentUser();
     if (!user) throw new Error('User not authenticated');
 
     const sessionRef = collection(db, 'users', user.uid, 'sessions');
-    
+
     const docRef = await addDoc(sessionRef, {
       ...session,
       userId: user.uid,
       createdAt: serverTimestamp()
     });
-    
+
     return docRef.id;
   } catch (error) {
     console.error('Error saving session:', error);
@@ -42,9 +38,6 @@ export const saveSession = async (session: Omit<PomodoroSession, 'id' | 'created
   }
 };
 
-/**
- * Get all Pomodoro sessions for the current user
- */
 export const getAllSessions = async (): Promise<PomodoroSession[]> => {
   try {
     const user = getCurrentUser();
@@ -52,7 +45,7 @@ export const getAllSessions = async (): Promise<PomodoroSession[]> => {
 
     const sessionsRef = collection(db, 'users', user.uid, 'sessions');
     const q = query(sessionsRef, orderBy('date', 'desc'));
-    
+
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => {
       const data = doc.data();
@@ -76,9 +69,6 @@ export const getAllSessions = async (): Promise<PomodoroSession[]> => {
   }
 };
 
-/**
- * Get Pomodoro sessions by date range
- */
 export const getSessionsByDateRange = async (startDate: Date, endDate: Date): Promise<PomodoroSession[]> => {
   try {
     const user = getCurrentUser();
@@ -91,7 +81,7 @@ export const getSessionsByDateRange = async (startDate: Date, endDate: Date): Pr
       where('date', '<=', endDate),
       orderBy('date', 'desc')
     );
-    
+
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => {
       const data = doc.data();
@@ -115,9 +105,6 @@ export const getSessionsByDateRange = async (startDate: Date, endDate: Date): Pr
   }
 };
 
-/**
- * Get a single session by ID
- */
 export const getSessionById = async (sessionId: string): Promise<PomodoroSession | null> => {
   try {
     const user = getCurrentUser();
@@ -125,7 +112,7 @@ export const getSessionById = async (sessionId: string): Promise<PomodoroSession
 
     const sessionRef = doc(db, 'users', user.uid, 'sessions', sessionId);
     const sessionSnap = await getDoc(sessionRef);
-    
+
     if (sessionSnap.exists()) {
       const data = sessionSnap.data();
       return {
@@ -140,7 +127,7 @@ export const getSessionById = async (sessionId: string): Promise<PomodoroSession
         notes: data.notes
       };
     }
-    
+
     return null;
   } catch (error) {
     console.error('Error getting session:', error);
@@ -148,9 +135,6 @@ export const getSessionById = async (sessionId: string): Promise<PomodoroSession
   }
 };
 
-/**
- * Update a session
- */
 export const updateSession = async (sessionId: string, sessionData: Partial<PomodoroSession>): Promise<void> => {
   try {
     const user = getCurrentUser();
@@ -164,9 +148,6 @@ export const updateSession = async (sessionId: string, sessionData: Partial<Pomo
   }
 };
 
-/**
- * Delete a session
- */
 export const deleteSession = async (sessionId: string): Promise<void> => {
   try {
     const user = getCurrentUser();
@@ -180,9 +161,6 @@ export const deleteSession = async (sessionId: string): Promise<void> => {
   }
 };
 
-/**
- * Get session statistics
- */
 export const getSessionStats = async (): Promise<{
   totalSessions: number;
   totalFocusTime: number;
@@ -191,15 +169,14 @@ export const getSessionStats = async (): Promise<{
 }> => {
   try {
     const sessions = await getAllSessions();
-    
-    // Only count completed focus sessions
+
     const focusSessions = sessions.filter(s => s.type === 'focus' && s.completed);
-    
+
     const totalSessions = focusSessions.length;
     const totalFocusTime = focusSessions.reduce((total, session) => total + session.duration, 0);
     const totalInterruptions = focusSessions.reduce((total, session) => total + (session.interruptions || 0), 0);
     const averageSessionLength = totalSessions > 0 ? totalFocusTime / totalSessions : 0;
-    
+
     return {
       totalSessions,
       totalFocusTime,

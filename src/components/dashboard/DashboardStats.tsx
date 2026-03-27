@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { CheckCircle, Clock, BarChart } from "lucide-react";
 import StatsCard from "@/components/StatsCard";

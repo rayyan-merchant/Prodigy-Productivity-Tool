@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Task } from "@/components/TaskCard";
 import {
@@ -53,7 +52,7 @@ const TaskDialogs: React.FC<TaskDialogsProps> = ({
           <DialogHeader>
             <DialogTitle>{selectedTask ? 'Edit Task' : 'Create New Task'}</DialogTitle>
           </DialogHeader>
-          <TaskForm 
+          <TaskForm
             onSubmit={selectedTask ? onEditTask : onAddTask}
             onCancel={() => {
               setIsDialogOpen(false);

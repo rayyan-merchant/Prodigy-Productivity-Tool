@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Filter, X, Calendar, Tag, Folder as FolderIcon, Star } from 'lucide-react';
 import { Input } from "@/components/ui/input";
@@ -109,7 +108,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Folder Filter */}
+
               <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center">
                   <FolderIcon className="h-4 w-4 mr-1" />
@@ -139,7 +138,6 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
                 </Select>
               </div>
 
-              {/* Favorites Filter */}
               <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center">
                   <Star className="h-4 w-4 mr-1" />
@@ -157,7 +155,6 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
                 </div>
               </div>
 
-              {/* Date Range Filter */}
               <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center">
                   <Calendar className="h-4 w-4 mr-1" />
@@ -209,7 +206,6 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
                 </div>
               </div>
 
-              {/* Tags Filter */}
               <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center">
                   <Tag className="h-4 w-4 mr-1" />
@@ -238,7 +234,6 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({
               </div>
             </div>
 
-            {/* Active Filters Display */}
             {activeFiltersCount > 0 && (
               <div className="pt-4 border-t">
                 <div className="flex flex-wrap gap-2">

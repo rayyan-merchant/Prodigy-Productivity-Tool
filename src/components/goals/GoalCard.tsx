@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Edit, Trash2, CheckCircle, Calendar, TrendingUp, Plus, Minus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -67,13 +66,12 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, onEdit, onDelete, onUpdatePro
           </div>
         </div>
       </CardHeader>
-      
+
       <CardContent className="space-y-4">
         {goal.description && (
           <p className="text-sm text-gray-600 dark:text-gray-400">{goal.description}</p>
         )}
-        
-        {/* Progress */}
+
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-600 dark:text-gray-400">Progress</span>
@@ -88,7 +86,6 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, onEdit, onDelete, onUpdatePro
           </div>
         </div>
 
-        {/* Quick Actions */}
         <div className="flex items-center gap-2">
           {!isUpdating ? (
             <>
@@ -144,7 +141,6 @@ const GoalCard: React.FC<GoalCardProps> = ({ goal, onEdit, onDelete, onUpdatePro
           )}
         </div>
 
-        {/* Deadline */}
         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
           <Calendar className="h-4 w-4" />
           <span>

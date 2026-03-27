@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Edit, Trash2, CheckCircle, X, Calendar, Flame, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,17 +14,17 @@ interface HabitCardProps {
   onMarkIncomplete: (habitId: string) => void;
 }
 
-const HabitCard: React.FC<HabitCardProps> = ({ 
-  habit, 
-  onEdit, 
-  onDelete, 
-  onMarkComplete, 
-  onMarkIncomplete 
+const HabitCard: React.FC<HabitCardProps> = ({
+  habit,
+  onEdit,
+  onDelete,
+  onMarkComplete,
+  onMarkIncomplete
 }) => {
   const today = new Date().toISOString().split('T')[0];
   const isCompletedToday = habit.completedDates.includes(today);
   const canComplete = canCompleteHabitToday(habit);
-  
+
   const getStreakColor = (streak: number, target: number) => {
     const percentage = (streak / target) * 100;
     if (percentage >= 100) return 'text-green-600 dark:text-green-400';
@@ -49,11 +48,11 @@ const HabitCard: React.FC<HabitCardProps> = ({
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(0, 0, 0, 0);
-    
+
     const timeUntil = tomorrow.getTime() - now.getTime();
     const hours = Math.floor(timeUntil / (1000 * 60 * 60));
     const minutes = Math.floor((timeUntil % (1000 * 60 * 60)) / (1000 * 60));
-    
+
     return `${hours}h ${minutes}m`;
   };
 
@@ -84,13 +83,12 @@ const HabitCard: React.FC<HabitCardProps> = ({
           </div>
         </div>
       </CardHeader>
-      
+
       <CardContent className="space-y-4">
         {habit.description && (
           <p className="text-sm text-muted-foreground">{habit.description}</p>
         )}
-        
-        {/* Streak Info */}
+
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Flame className="h-4 w-4 text-orange-500" />
@@ -103,7 +101,6 @@ const HabitCard: React.FC<HabitCardProps> = ({
           </div>
         </div>
 
-        {/* Progress Bar */}
         <div className="space-y-1">
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>Progress to target</span>
@@ -119,7 +116,6 @@ const HabitCard: React.FC<HabitCardProps> = ({
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex gap-2">
           {!isCompletedToday && canComplete ? (
             <Button
@@ -159,7 +155,6 @@ const HabitCard: React.FC<HabitCardProps> = ({
           )}
         </div>
 
-        {/* Last completed */}
         {habit.completedDates.length > 0 && (
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Calendar className="h-3 w-3" />

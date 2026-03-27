@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -32,30 +31,28 @@ const SessionAnalytics: React.FC<SessionAnalyticsProps> = ({ isOpen, onClose }) 
   const loadAnalytics = async () => {
     try {
       setIsLoading(true);
-      
-      // Load all sessions and stats
+
       const [allSessions, sessionStats] = await Promise.all([
         getAllSessions(),
         getSessionStats()
       ]);
-      
+
       setSessions(allSessions);
       setStats(sessionStats);
-      
-      // Process weekly data
+
       const weekStart = startOfWeek(new Date());
       const weekEnd = endOfWeek(new Date());
       const weekDays = eachDayOfInterval({ start: weekStart, end: weekEnd });
-      
+
       const weeklySessionData = weekDays.map(day => {
         const dayString = format(day, 'yyyy-MM-dd');
         const daySessions = allSessions.filter(session => {
-          const sessionDate = typeof session.date === 'string' 
-            ? session.date 
+          const sessionDate = typeof session.date === 'string'
+            ? session.date
             : format(session.date, 'yyyy-MM-dd');
           return sessionDate === dayString && session.type === 'focus' && session.completed;
         });
-        
+
         return {
           day: format(day, 'EEE'),
           sessions: daySessions.length,
@@ -63,7 +60,7 @@ const SessionAnalytics: React.FC<SessionAnalyticsProps> = ({ isOpen, onClose }) 
           interruptions: daySessions.reduce((total, session) => total + (session.interruptions || 0), 0)
         };
       });
-      
+
       setWeeklyData(weeklySessionData);
     } catch (error) {
       console.error('Error loading analytics:', error);
@@ -89,7 +86,7 @@ const SessionAnalytics: React.FC<SessionAnalyticsProps> = ({ isOpen, onClose }) 
             </div>
           ) : (
             <>
-              {/* Stats Cards */}
+
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -132,7 +129,6 @@ const SessionAnalytics: React.FC<SessionAnalyticsProps> = ({ isOpen, onClose }) 
                 </Card>
               </div>
 
-              {/* Weekly Sessions Chart */}
               <Card className="mb-8">
                 <CardHeader>
                   <CardTitle>This Week's Sessions</CardTitle>
@@ -150,7 +146,6 @@ const SessionAnalytics: React.FC<SessionAnalyticsProps> = ({ isOpen, onClose }) 
                 </CardContent>
               </Card>
 
-              {/* Focus Time Trend */}
               <Card>
                 <CardHeader>
                   <CardTitle>Daily Focus Time (Minutes)</CardTitle>

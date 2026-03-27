@@ -1,4 +1,3 @@
-
 import React from 'react';
 import SummaryCard from "@/components/analytics/SummaryCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -37,40 +36,40 @@ const SummaryCards: React.FC<SummaryCardsProps> = ({
         </>
       ) : (
         <>
-          <SummaryCard 
-            title="Total Focus Time" 
+          <SummaryCard
+            title="Total Focus Time"
             value={`${totalFocusTime.toFixed(1)}h`}
-            icon={<Clock className="h-4 w-4" />} 
+            icon={<Clock className="h-4 w-4" />}
             color="text-red-500"
           />
-          <SummaryCard 
-            title="Focus Time This Week" 
+          <SummaryCard
+            title="Focus Time This Week"
             value={`${thisWeekFocusTime.toFixed(1)}h`}
-            icon={<Clock className="h-4 w-4" />} 
+            icon={<Clock className="h-4 w-4" />}
             color="text-red-500"
           />
-          <SummaryCard 
-            title="Focus Time Today" 
+          <SummaryCard
+            title="Focus Time Today"
             value={`${todayFocusTime.toFixed(1)}h`}
-            icon={<Clock className="h-4 w-4" />} 
+            icon={<Clock className="h-4 w-4" />}
             color="text-red-500"
           />
-          <SummaryCard 
-            title="Total Completed Tasks" 
+          <SummaryCard
+            title="Total Completed Tasks"
             value={totalCompletedTasks.toString()}
-            icon={<CheckSquare className="h-4 w-4" />} 
+            icon={<CheckSquare className="h-4 w-4" />}
             color="text-blue-500"
           />
-          <SummaryCard 
-            title="Tasks Completed This Week" 
+          <SummaryCard
+            title="Tasks Completed This Week"
             value={thisWeekCompletedTasks.toString()}
-            icon={<CheckSquare className="h-4 w-4" />} 
+            icon={<CheckSquare className="h-4 w-4" />}
             color="text-blue-500"
           />
-          <SummaryCard 
-            title="Tasks Completed Today" 
+          <SummaryCard
+            title="Tasks Completed Today"
             value={todayCompletedTasks.toString()}
-            icon={<CheckSquare className="h-4 w-4" />} 
+            icon={<CheckSquare className="h-4 w-4" />}
             color="text-blue-500"
           />
         </>

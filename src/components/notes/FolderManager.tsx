@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Folder, Plus, Edit2, Trash2, FolderIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -89,7 +88,7 @@ const FolderManager: React.FC<FolderManagerProps> = ({
             New Folder
           </Button>
         </div>
-        
+
         <div className="space-y-2">
           <Button
             variant={selectedFolderId === undefined ? "default" : "ghost"}
@@ -99,7 +98,7 @@ const FolderManager: React.FC<FolderManagerProps> = ({
             <FolderIcon className="h-4 w-4 mr-2" />
             All Notes
           </Button>
-          
+
           {folders.map((folder) => (
             <div
               key={folder.id}
@@ -116,7 +115,7 @@ const FolderManager: React.FC<FolderManagerProps> = ({
                 />
                 {folder.name}
               </Button>
-              
+
               <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-1">
                 <Button
                   variant="ghost"
@@ -140,7 +139,6 @@ const FolderManager: React.FC<FolderManagerProps> = ({
         </div>
       </Card>
 
-      {/* Create/Edit Folder Dialog */}
       <Dialog
         open={isCreateDialogOpen || editingFolder !== null}
         onOpenChange={(open) => {
@@ -158,7 +156,7 @@ const FolderManager: React.FC<FolderManagerProps> = ({
               {editingFolder ? 'Edit Folder' : 'Create New Folder'}
             </DialogTitle>
           </DialogHeader>
-          
+
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium mb-2 block">Folder Name</label>
@@ -169,7 +167,7 @@ const FolderManager: React.FC<FolderManagerProps> = ({
                 autoFocus
               />
             </div>
-            
+
             <div>
               <label className="text-sm font-medium mb-2 block">Color</label>
               <div className="flex gap-2">
@@ -187,7 +185,7 @@ const FolderManager: React.FC<FolderManagerProps> = ({
               </div>
             </div>
           </div>
-          
+
           <DialogFooter>
             <Button
               variant="outline"
@@ -210,7 +208,6 @@ const FolderManager: React.FC<FolderManagerProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
       <AlertDialog
         open={deletingFolderId !== null}
         onOpenChange={(open) => !open && setDeletingFolderId(null)}

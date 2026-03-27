@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useTimer } from '@/contexts/TimerContext';
@@ -24,7 +23,6 @@ import { useTheme } from '@/hooks/useTheme';
 import { toast } from 'sonner';
 import type { Task } from '@/types/tasks';
 
-// Import our components
 import Background from '@/components/pomodoro/Background';
 import HeaderBar from '@/components/pomodoro/HeaderBar';
 import TimerCircle from '@/components/pomodoro/TimerCircle';
@@ -59,7 +57,7 @@ const PomodoroTimer = () => {
   const [showNotes, setShowNotes] = useState(false);
   const { theme } = useTheme();
   const [noteSaveDialogOpen, setNoteSaveDialogOpen] = useState(false);
-  
+
   const {
     isActive,
     isBreak,
@@ -80,7 +78,6 @@ const PomodoroTimer = () => {
     isWaitingForUser
   } = usePomodoro();
 
-  // Listen for keyboard shortcut events
   useEffect(() => {
     const handleTogglePomodoro = () => {
       toggleTimer();
@@ -99,14 +96,12 @@ const PomodoroTimer = () => {
     };
   }, [toggleTimer, resetTimer]);
 
-  // Show note save dialog when prompted
   useEffect(() => {
     if (shouldPromptForNoteSave && sessionNotes.trim()) {
       setNoteSaveDialogOpen(true);
     }
   }, [shouldPromptForNoteSave, sessionNotes]);
 
-  // Save focus type and custom focus
   useEffect(() => {
     localStorage.setItem('pomodoro-focus-type', focusType);
     if (focusType === 'Custom' && customFocus) {
@@ -159,9 +154,9 @@ const PomodoroTimer = () => {
     setNoteSaveDialogOpen(false);
     setShouldPromptForNoteSave(false);
   };
-  
+
   const handleSaveSheetNotes = async () => {
-    // Only try to save if there are notes to save
+
     if (sessionNotes.trim()) {
       const success = await saveNotes();
       if (success) {
@@ -176,7 +171,7 @@ const PomodoroTimer = () => {
   const handleTaskSelect = (task: Task | null) => {
     setSelectedTask(task);
     if (task) {
-      // Update focus type to show task-based focus
+
       setFocusType('Task');
       setShowCustomInput(false);
     }
@@ -184,19 +179,17 @@ const PomodoroTimer = () => {
 
   return (
     <div className="relative min-h-screen flex flex-col">
-      {/* Background Image with Overlay */}
+
       <Background />
-      
-      {/* Content Container */}
+
       <div className="relative z-10 flex-1 flex flex-col p-6">
-        {/* Top Navigation */}
+
         <HeaderBar />
-        
-        {/* Main Content */}
+
         <div className="flex flex-1 items-center justify-center mx-auto w-full max-w-7xl">
-          {/* Timer Section - Centered */}
+
           <div className="flex-1 flex flex-col items-center justify-center">
-            {/* Toggle Focus/Break Button */}
+
             <div className="mb-8">
               <div className="flex space-x-2 p-2 bg-white/10 backdrop-blur-sm rounded-full">
                 <button
@@ -223,42 +216,37 @@ const PomodoroTimer = () => {
               </div>
             </div>
 
-            {/* Task Selection - Only show during focus mode */}
             {!isBreak && (
               <div className="mb-6 w-full max-w-md">
-                <TaskSelector 
+                <TaskSelector
                   selectedTask={selectedTask}
                   onTaskSelect={handleTaskSelect}
                 />
               </div>
             )}
-            
-            {/* Timer Circle */}
+
             <TimerCircle minutes={minutes} seconds={seconds} progress={progress} />
-            
-            {/* Session Label */}
-            <SessionInfo 
-              isBreak={isBreak} 
+
+            <SessionInfo
+              isBreak={isBreak}
               isLongBreak={isLongBreak}
-              sessionsCompleted={sessionsCompleted} 
+              sessionsCompleted={sessionsCompleted}
               longBreakInterval={settings.longBreakInterval}
             />
-            
-            {/* Pomodoros until long break */}
+
             {!isBreak && !isLongBreak && (
               <div className="mt-2 text-white/70 text-sm">
-                {pomodorosUntilLongBreak === 1 
-                  ? "1 more session until long break" 
+                {pomodorosUntilLongBreak === 1
+                  ? "1 more session until long break"
                   : `${pomodorosUntilLongBreak} more sessions until long break`}
               </div>
             )}
 
-            {/* Waiting state indicator */}
             {isWaitingForUser && (
               <div className="mt-4 text-center">
                 <div className="text-white/90 text-lg font-medium mb-2">
-                  {isBreak 
-                    ? (isLongBreak ? 'Long break ready!' : 'Short break ready!') 
+                  {isBreak
+                    ? (isLongBreak ? 'Long break ready!' : 'Short break ready!')
                     : 'Ready for next focus session!'}
                 </div>
                 <div className="text-white/70 text-sm">
@@ -267,20 +255,18 @@ const PomodoroTimer = () => {
               </div>
             )}
 
-            {/* Timer Controls */}
-            <TimerControls 
-              isActive={isActive} 
-              toggleTimer={toggleTimer} 
+            <TimerControls
+              isActive={isActive}
+              toggleTimer={toggleTimer}
               resetTimer={resetTimer}
               isWaitingForUser={isWaitingForUser}
               isBreak={isBreak}
               isLongBreak={isLongBreak}
             />
 
-            {/* Mobile Controls for Notes - Only visible on small screens */}
             <div className="mt-8 md:hidden">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="bg-white/10 border-white/20 text-white hover:bg-white/20"
                 onClick={() => setShowNotes(true)}
               >
@@ -288,11 +274,10 @@ const PomodoroTimer = () => {
               </Button>
             </div>
           </div>
-          
-          {/* Right Sidebar - Only visible on larger screens */}
+
           <div className="hidden md:block">
             <div className="space-y-4 ml-8">
-              <SidebarOptions 
+              <SidebarOptions
                 onNoteNavigation={handleNoteNavigation}
                 onFocusTypeChange={handleFocusTypeChange}
                 onSettingsOpen={() => setShowSettings(true)}
@@ -304,10 +289,9 @@ const PomodoroTimer = () => {
                 onTeamSessionsOpen={() => setShowTeamSessions(true)}
                 onFocusModeOpen={() => setShowFocusMode(true)}
               />
-              
-              {/* When Timer is Active, Show Task and Notes Panels */}
+
               {isActive && (
-                <ActiveSessionInfo 
+                <ActiveSessionInfo
                   focusType={selectedTask ? 'Task' : focusType}
                   customFocus={selectedTask ? selectedTask.title : customFocus}
                   quickNote={sessionNotes}
@@ -319,7 +303,6 @@ const PomodoroTimer = () => {
         </div>
       </div>
 
-      {/* Settings Dialog */}
       <Dialog open={showSettings} onOpenChange={setShowSettings}>
         <DialogContent className={`${theme === 'dark' ? 'bg-gray-900 text-white border-gray-700' : 'bg-white text-gray-800 border-gray-200'}`}>
           <DialogHeader>
@@ -328,15 +311,14 @@ const PomodoroTimer = () => {
           <TimerSettings onClose={() => setShowSettings(false)} />
         </DialogContent>
       </Dialog>
-      
-      {/* Notes Sheet */}
+
       <Sheet open={showNotes} onOpenChange={setShowNotes}>
         <SheetContent className={`w-[400px] sm:w-[540px] ${theme === 'dark' ? 'bg-gray-900 text-white border-gray-700' : 'bg-white text-gray-800 border-gray-200'}`}>
           <SheetHeader>
             <SheetTitle className={theme === 'dark' ? 'text-white' : 'text-gray-800'}>Focus Notes</SheetTitle>
           </SheetHeader>
           <div className="mt-6">
-            <Textarea 
+            <Textarea
               className={`min-h-[300px] ${theme === 'dark' ? 'bg-gray-800 border-gray-700 text-white placeholder:text-gray-400' : 'bg-gray-100 border-gray-300 text-gray-800 placeholder:text-gray-500'}`}
               placeholder="Write your notes here..."
               value={sessionNotes}
@@ -348,8 +330,7 @@ const PomodoroTimer = () => {
           </div>
         </SheetContent>
       </Sheet>
-      
-      {/* Note Save Dialog */}
+
       <Dialog open={noteSaveDialogOpen} onOpenChange={setNoteSaveDialogOpen}>
         <DialogContent>
           <DialogHeader>
@@ -358,11 +339,11 @@ const PomodoroTimer = () => {
               Would you like to save your notes from this focus session?
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="max-h-[200px] overflow-y-auto border rounded-md p-3 my-4 bg-muted/50">
             {sessionNotes}
           </div>
-          
+
           <DialogFooter className="flex space-x-2 sm:space-x-0">
             <Button variant="outline" onClick={handleDiscardNotes}>
               Discard
@@ -374,23 +355,22 @@ const PomodoroTimer = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Enhanced Feature Dialogs */}
-      <SessionAnalytics 
+      <SessionAnalytics
         isOpen={showAnalytics}
         onClose={() => setShowAnalytics(false)}
       />
-      
-      <SoundThemes 
+
+      <SoundThemes
         isOpen={showSoundThemes}
         onClose={() => setShowSoundThemes(false)}
       />
-      
-      <TeamSessions 
+
+      <TeamSessions
         isOpen={showTeamSessions}
         onClose={() => setShowTeamSessions(false)}
       />
-      
-      <FocusMode 
+
+      <FocusMode
         isOpen={showFocusMode}
         onClose={() => setShowFocusMode(false)}
       />

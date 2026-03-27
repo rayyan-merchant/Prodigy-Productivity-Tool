@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Layout from './Layout';
@@ -7,11 +6,10 @@ import { useTheme } from '@/hooks/useTheme';
 import { useOffline } from '@/hooks/useOffline';
 
 const LayoutWrapper: React.FC = () => {
-  // Initialize theme
+
   const { theme } = useTheme();
   const { isOnline } = useOffline();
-  
-  // Need this to make the theme apply on initial load
+
   React.useEffect(() => {
     const root = window.document.documentElement;
     if (theme === 'dark') {
@@ -21,12 +19,11 @@ const LayoutWrapper: React.FC = () => {
     }
   }, [theme]);
 
-  // Handle offline data sync
   React.useEffect(() => {
     const handleSyncOfflineData = () => {
-      // This event is triggered when coming back online
+
       console.log('Syncing offline data...');
-      // Add actual sync logic here when needed
+
     };
 
     window.addEventListener('syncOfflineData', handleSyncOfflineData);

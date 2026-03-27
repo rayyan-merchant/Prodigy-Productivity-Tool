@@ -1,4 +1,3 @@
-
 import React from 'react';
 import TaskCard, { Task } from "@/components/TaskCard";
 import { Button } from "@/components/ui/button";
@@ -50,9 +49,9 @@ const TaskList: React.FC<TaskListProps> = ({
     return (
       <div className="col-span-3 text-center py-8 space-y-4">
         <p className="text-destructive dark:text-red-400">{error}</p>
-        <Button 
-          variant="outline" 
-          onClick={handleRefetch} 
+        <Button
+          variant="outline"
+          onClick={handleRefetch}
           className="flex items-center gap-2"
         >
           <RefreshCw size={16} />
@@ -67,9 +66,9 @@ const TaskList: React.FC<TaskListProps> = ({
       <div className="col-span-3 text-center py-8">
         <p className="text-muted-foreground dark:text-gray-400">{emptyMessage}</p>
         {onRefetch && (
-          <Button 
-            variant="outline" 
-            onClick={handleRefetch} 
+          <Button
+            variant="outline"
+            onClick={handleRefetch}
             className="mt-4 flex items-center gap-2"
           >
             <RefreshCw size={16} />

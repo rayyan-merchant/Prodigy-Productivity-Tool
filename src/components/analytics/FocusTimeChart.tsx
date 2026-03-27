@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -46,10 +45,10 @@ const FocusTimeChart: React.FC<FocusTimeChartProps> = ({ isLoading, focusData, t
                 <XAxis dataKey="date" axisLine={false} tickLine={false} />
                 <YAxis axisLine={false} tickLine={false} />
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <Line 
-                  type="monotone" 
-                  dataKey="hours" 
-                  strokeWidth={2} 
+                <Line
+                  type="monotone"
+                  dataKey="hours"
+                  strokeWidth={2}
                   dot={{ r: 4, strokeWidth: 2 }}
                   activeDot={{ r: 6, strokeWidth: 2 }}
                 />

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -36,9 +35,9 @@ const NoteForm: React.FC<NoteFormProps> = ({
           <label htmlFor="title" className="text-sm font-medium">
             Title
           </label>
-          <Button 
-            type="button" 
-            variant="outline" 
+          <Button
+            type="button"
+            variant="outline"
             size="sm"
             onClick={onGenerateTitleAndTags}
             disabled={isGeneratingTitleAndTags || !content.trim()}
@@ -57,7 +56,7 @@ const NoteForm: React.FC<NoteFormProps> = ({
           autoFocus
         />
       </div>
-      
+
       <div className="grid gap-2">
         <label htmlFor="content" className="text-sm font-medium">
           Content
@@ -77,9 +76,9 @@ const NoteForm: React.FC<NoteFormProps> = ({
           {tags.map(tag => (
             <Badge key={tag} variant="secondary" className="px-3 py-1">
               {tag}
-              <button 
-                type="button" 
-                onClick={() => onRemoveTag(tag)} 
+              <button
+                type="button"
+                onClick={() => onRemoveTag(tag)}
                 className="ml-2 hover:text-destructive focus:outline-none"
               >
                 ×

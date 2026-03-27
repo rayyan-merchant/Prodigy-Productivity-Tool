@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -19,8 +18,8 @@ const OverlayPanel: React.FC<OverlayPanelProps> = ({ isLogin, toggleAuthMode }) 
           <>
             <h2 className="text-3xl font-bold mb-4">HELLO BUDDY!</h2>
             <p className="mb-8">Enter your personal details and start your journey with us</p>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="border-2 border-white text-white hover:bg-white/10 rounded-full"
               onClick={toggleAuthMode}
             >
@@ -31,8 +30,8 @@ const OverlayPanel: React.FC<OverlayPanelProps> = ({ isLogin, toggleAuthMode }) 
           <>
             <h2 className="text-3xl font-bold mb-4">WELCOME BACK!</h2>
             <p className="mb-8">To keep connected with us please login with your personal info</p>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="border-2 border-white text-white hover:bg-white/10 rounded-full"
               onClick={toggleAuthMode}
             >

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -17,7 +16,7 @@ const ProfileHeader = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      // Immediately navigate to landing page
+
       navigate('/');
     } catch (error) {
       console.error("Logout failed:", error);

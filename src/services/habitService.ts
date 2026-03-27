@@ -1,4 +1,3 @@
-
 import { db } from '@/lib/firebase';
 import { collection, doc, addDoc, updateDoc, deleteDoc, getDocs, query, orderBy, serverTimestamp } from 'firebase/firestore';
 import { getCurrentUser } from '@/lib/auth';
@@ -9,7 +8,7 @@ const convertFirestoreHabit = (doc: any): Habit => {
   const data = doc.data();
   return {
     id: doc.id,
-    name: data.name || data.title, // Handle both name and title for backwards compatibility
+    name: data.name || data.title,
     description: data.description,
     category: data.category,
     frequency: data.frequency,
@@ -37,7 +36,7 @@ export const getHabits = async (): Promise<Habit[]> => {
 
     const habitsRef = collection(db, 'users', user.uid, 'habits');
     const q = query(habitsRef, orderBy('updatedAt', 'desc'));
-    
+
     const querySnapshot = await getDocs(q);
     const habits = querySnapshot.docs.map(convertFirestoreHabit);
     return habits;
@@ -49,7 +48,7 @@ export const getHabits = async (): Promise<Habit[]> => {
 
 export const createHabit = async (habitData: Omit<Habit, 'id' | 'createdAt' | 'updatedAt'>): Promise<Habit> => {
   const user = getCurrentUser();
-  
+
   try {
     if (!user) {
       throw new Error('User not authenticated');
@@ -57,17 +56,16 @@ export const createHabit = async (habitData: Omit<Habit, 'id' | 'createdAt' | 'u
 
     const now = serverTimestamp();
     const habitsRef = collection(db, 'users', user.uid, 'habits');
-    
+
     const dataToSave = {
       ...habitData,
       createdAt: now,
       updatedAt: now,
       userId: user.uid
     };
-    
+
     const docRef = await addDoc(habitsRef, dataToSave);
 
-    // Create activity
     await createHabitActivity(
       'New habit created',
       `"${habitData.name}" habit was created`,
@@ -94,13 +92,12 @@ export const updateHabit = async (habitId: string, habitData: Partial<Omit<Habit
     }
 
     const habitRef = doc(db, 'users', user.uid, 'habits', habitId);
-    
+
     await updateDoc(habitRef, {
       ...habitData,
       updatedAt: serverTimestamp()
     });
-    
-    // Create activity for habit updates
+
     if (habitData.name) {
       await createHabitActivity(
         'Habit updated',
@@ -124,15 +121,14 @@ export const completeHabit = async (habitId: string, habitTitle: string): Promis
 
     const today = new Date().toISOString().split('T')[0];
     const habitRef = doc(db, 'users', user.uid, 'habits', habitId);
-    
-    // Get current habit data to update streak
+
     const habits = await getHabits();
     const habit = habits.find(h => h.id === habitId);
-    
+
     if (habit) {
       const newStreak = habit.currentStreak + 1;
       const newLongestStreak = Math.max(habit.longestStreak, newStreak);
-      
+
       await updateDoc(habitRef, {
         currentStreak: newStreak,
         longestStreak: newLongestStreak,
@@ -140,7 +136,6 @@ export const completeHabit = async (habitId: string, habitTitle: string): Promis
         updatedAt: serverTimestamp()
       });
 
-      // Create activity for habit completion
       await createHabitActivity(
         'Habit completed',
         `"${habitTitle}" completed - ${newStreak} day streak!`,
@@ -161,15 +156,13 @@ export const deleteHabit = async (habitId: string): Promise<void> => {
       throw new Error('User not authenticated');
     }
 
-    // Get habit title before deletion
     const habits = await getHabits();
     const habit = habits.find(h => h.id === habitId);
     const habitTitle = habit?.name || 'Unknown habit';
 
     const habitRef = doc(db, 'users', user.uid, 'habits', habitId);
     await deleteDoc(habitRef);
-    
-    // Create activity
+
     await createHabitActivity(
       'Habit deleted',
       `"${habitTitle}" was deleted`,

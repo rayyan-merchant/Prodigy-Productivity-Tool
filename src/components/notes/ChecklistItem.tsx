@@ -77,13 +77,13 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
     <div className={cn("group", depth > 0 && "ml-6 border-l-2 border-gray-100 dark:border-gray-700 pl-3")}>
       <div className="flex items-center gap-2 py-1 hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-2 -mx-2">
         <GripVertical className="h-4 w-4 text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100 cursor-grab" />
-        
+
         <Checkbox
           checked={item.completed}
           onCheckedChange={handleCheckboxChange}
           className="flex-shrink-0"
         />
-        
+
         <div className="flex-1 min-w-0">
           {isEditing ? (
             <input
@@ -107,7 +107,7 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
             </span>
           )}
         </div>
-        
+
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100">
           {depth === 0 && (
             <Button
@@ -119,7 +119,7 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
               <Plus className="h-3 w-3" />
             </Button>
           )}
-          
+
           <Button
             size="sm"
             variant="ghost"
@@ -130,8 +130,7 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
           </Button>
         </div>
       </div>
-      
-      {/* Sub-items */}
+
       {item.subItems && item.subItems.length > 0 && (
         <div className="mt-1">
           {item.subItems.map((subItem) => (
@@ -140,7 +139,7 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
               item={subItem}
               onUpdate={(id, updates) => handleUpdateSubItem(id, updates)}
               onDelete={(id) => handleDeleteSubItem(id)}
-              onAddSubItem={() => {}} // Sub-items can't have their own sub-items
+              onAddSubItem={() => {}}
               onDeleteSubItem={() => {}}
               onUpdateSubItem={() => {}}
               depth={depth + 1}

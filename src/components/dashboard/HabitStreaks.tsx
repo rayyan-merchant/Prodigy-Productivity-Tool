@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Flame, Plus, Check } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +17,7 @@ const HabitStreaks: React.FC = () => {
     const fetchHabits = async () => {
       try {
         const fetchedHabits = await getHabits();
-        // Show only the top 3 most active habits that haven't been completed today
+
         const today = new Date().toISOString().split('T')[0];
         const availableHabits = fetchedHabits
           .filter(h => h.isActive && !h.completedDates.includes(today))
@@ -37,23 +36,22 @@ const HabitStreaks: React.FC = () => {
   const markHabitComplete = async (habitId: string) => {
     const today = new Date().toISOString().split('T')[0];
     const habit = habits.find(h => h.id === habitId);
-    
+
     if (!habit || habit.completedDates.includes(today)) return;
-    
+
     try {
       const newStreak = habit.currentStreak + 1;
       const newLongestStreak = Math.max(habit.longestStreak, newStreak);
       const newCompletedDates = [...habit.completedDates, today];
-      
+
       await updateHabit(habitId, {
         currentStreak: newStreak,
         longestStreak: newLongestStreak,
         completedDates: newCompletedDates
       });
-      
-      // Remove the completed habit from the dashboard immediately
+
       setHabits(habits.filter(h => h.id !== habitId));
-      
+
       toast.success(`Great job! ${newStreak} day streak! 🔥`);
     } catch (error) {
       console.error('Error marking habit complete:', error);

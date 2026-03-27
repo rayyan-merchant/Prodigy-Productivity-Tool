@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,9 +24,9 @@ const RecentTasksSection: React.FC<RecentTasksSectionProps> = ({
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-foreground">Recent Tasks</CardTitle>
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             className="gap-1 hover:bg-[#D2353E]/10 hover:text-[#D2353E] hover:border-[#D2353E]"
             onClick={() => window.location.href = '/tasks'}
           >
@@ -45,9 +44,9 @@ const RecentTasksSection: React.FC<RecentTasksSectionProps> = ({
         ) : tasks.length > 0 ? (
           <div className="space-y-3">
             {tasks.map(task => (
-              <TaskCard 
-                key={task.id} 
-                task={task} 
+              <TaskCard
+                key={task.id}
+                task={task}
                 onEdit={onEditTask}
                 onDelete={onDeleteTask}
                 onStatusChange={onStatusChange}

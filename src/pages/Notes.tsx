@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -48,7 +47,7 @@ const Notes: React.FC = () => {
                   <Plus className="mr-2 h-4 w-4" /> New Note
                 </Button>
               </div>
-              
+
               <AdvancedSearch
                 searchQuery={searchQuery}
                 onSearchChange={setSearchQuery}
@@ -70,17 +69,17 @@ const Notes: React.FC = () => {
                   onDeleteFolder={handleDeleteFolder}
                 />
               </div>
-              
+
               <div className="lg:col-span-3">
                 {isLoading ? (
                   <div className="flex justify-center my-12">
                     <p>Loading notes...</p>
                   </div>
                 ) : filteredNotes.length > 0 ? (
-                  <NotesList 
+                  <NotesList
                     notes={filteredNotes}
                     folders={folders}
-                    onEditNote={handleEditNote} 
+                    onEditNote={handleEditNote}
                     onDeleteNote={handleDeleteNote}
                     onToggleFavorite={handleToggleFavorite}
                     onUpdateNote={handleUpdateNote}
@@ -88,8 +87,8 @@ const Notes: React.FC = () => {
                 ) : (
                   <Card className="p-12 flex flex-col items-center justify-center animate-fade-in">
                     <h3 className="text-xl font-medium text-center">
-                      {searchQuery || Object.keys(searchFilters).length > 0 
-                        ? 'No notes match your search criteria' 
+                      {searchQuery || Object.keys(searchFilters).length > 0
+                        ? 'No notes match your search criteria'
                         : 'No notes yet! Create your first note 🎉'
                       }
                     </h3>

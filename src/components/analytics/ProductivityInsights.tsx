@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,10 +14,10 @@ interface ProductivityInsightsProps {
   aiInsight?: string;
 }
 
-const ProductivityInsights: React.FC<ProductivityInsightsProps> = ({ 
-  isLoading, 
-  filteredSessions, 
-  filteredTasks, 
+const ProductivityInsights: React.FC<ProductivityInsightsProps> = ({
+  isLoading,
+  filteredSessions,
+  filteredTasks,
   totalCompletedTasks,
   totalFocusTime,
   dateRange,
@@ -42,10 +41,10 @@ const ProductivityInsights: React.FC<ProductivityInsightsProps> = ({
             <div className="flex items-center gap-2">
               <BarChart3 className="h-5 w-5 text-blue-500" />
               <p className="text-sm">
-                {filteredTasks.length > 0 
-                  ? `You've completed ${totalCompletedTasks} tasks ${dateRange === '7d' ? 'this week' : 
-                      dateRange === '30d' ? 'this month' : 
-                      dateRange === '90d' ? 'in the past 3 months' : 
+                {filteredTasks.length > 0
+                  ? `You've completed ${totalCompletedTasks} tasks ${dateRange === '7d' ? 'this week' :
+                      dateRange === '30d' ? 'this month' :
+                      dateRange === '90d' ? 'in the past 3 months' :
                       'in total'}.`
                   : 'Complete tasks to see your productivity insights.'}
               </p>
@@ -53,10 +52,10 @@ const ProductivityInsights: React.FC<ProductivityInsightsProps> = ({
             <div className="flex items-center gap-2">
               <Clock className="h-5 w-5 text-red-500" />
               <p className="text-sm">
-                {filteredSessions.length > 0 
-                  ? `You've spent ${totalFocusTime.toFixed(1)} hours in focused work ${dateRange === '7d' ? 'this week' : 
-                      dateRange === '30d' ? 'this month' : 
-                      dateRange === '90d' ? 'in the past 3 months' : 
+                {filteredSessions.length > 0
+                  ? `You've spent ${totalFocusTime.toFixed(1)} hours in focused work ${dateRange === '7d' ? 'this week' :
+                      dateRange === '30d' ? 'this month' :
+                      dateRange === '90d' ? 'in the past 3 months' :
                       'in total'}.`
                   : 'Complete Pomodoro sessions to see focus time insights.'}
               </p>

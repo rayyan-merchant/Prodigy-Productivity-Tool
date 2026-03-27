@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { Edit, Trash2, Star, Lock, Unlock } from 'lucide-react';
@@ -34,13 +33,13 @@ interface NoteCardProps {
   folderName?: string;
 }
 
-const NoteCard: React.FC<NoteCardProps> = ({ 
-  note, 
-  onEdit, 
-  onDelete, 
-  onToggleFavorite, 
+const NoteCard: React.FC<NoteCardProps> = ({
+  note,
+  onEdit,
+  onDelete,
+  onToggleFavorite,
   onUpdateNote,
-  folderName 
+  folderName
 }) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [encryptionDialog, setEncryptionDialog] = useState<{
@@ -48,7 +47,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
     mode: 'encrypt' | 'decrypt';
   }>({ isOpen: false, mode: 'encrypt' });
   const navigate = useNavigate();
-  
+
   const handleDelete = () => {
     setIsDeleteDialogOpen(true);
   };
@@ -72,7 +71,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
   };
 
   const formattedDate = formatDistanceToNow(new Date(note.updatedAt), { addSuffix: true });
-  
+
   return (
     <>
       <Card className="h-full flex flex-col hover:shadow-md transition-all duration-200 cursor-pointer hover:scale-[1.02] animate-fade-in task-card" onClick={handleOpenFullEditor}>

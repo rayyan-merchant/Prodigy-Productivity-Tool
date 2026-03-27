@@ -5,14 +5,14 @@ import { RefreshCw } from 'lucide-react';
 import { getMotivationalQuote } from '@/services/supabaseAiService';
 
 interface MotivationalQuoteProps {
-  // Making initialQuote and quotes optional
+
   initialQuote?: string;
   quotes?: string[];
 }
 
-const MotivationalQuote: React.FC<MotivationalQuoteProps> = ({ 
+const MotivationalQuote: React.FC<MotivationalQuoteProps> = ({
   initialQuote,
-  quotes = [] 
+  quotes = []
 }) => {
   const [quote, setQuote] = useState<string>(initialQuote || '');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -20,7 +20,7 @@ const MotivationalQuote: React.FC<MotivationalQuoteProps> = ({
   const fetchNewQuote = async () => {
     setIsLoading(true);
     try {
-      // If quotes array is provided and not empty, use it
+
       if (quotes && quotes.length > 0) {
         const randomIndex = Math.floor(Math.random() * quotes.length);
         setQuote(quotes[randomIndex]);
@@ -28,7 +28,6 @@ const MotivationalQuote: React.FC<MotivationalQuoteProps> = ({
         return;
       }
 
-      // Otherwise fetch from Supabase AI service
       const newQuote = await getMotivationalQuote();
       setQuote(newQuote);
     } catch (error) {
@@ -38,17 +37,15 @@ const MotivationalQuote: React.FC<MotivationalQuoteProps> = ({
     }
   };
 
-  // Fetch quote when component mounts
   useEffect(() => {
     if (!initialQuote) {
       fetchNewQuote();
     }
-    
-    // Set up interval to fetch new quote every 5 minutes
+
     const interval = setInterval(() => {
       fetchNewQuote();
     }, 5 * 60 * 1000);
-    
+
     return () => clearInterval(interval);
   }, [initialQuote]);
 
@@ -67,7 +64,7 @@ const MotivationalQuote: React.FC<MotivationalQuoteProps> = ({
             <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
           </Button>
         </div>
-        
+
         <div className="flex-1 flex items-center justify-center text-center">
           {isLoading ? (
             <p className="text-muted-foreground italic">Loading motivation...</p>

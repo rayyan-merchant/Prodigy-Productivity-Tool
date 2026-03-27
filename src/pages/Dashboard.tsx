@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, Clock, BarChart } from "lucide-react";
 import CompactTimer from "@/components/CompactTimer";
@@ -14,7 +13,6 @@ import { toast } from "sonner";
 import { getTasks, updateTask } from "@/services/taskService";
 import { getCurrentUser } from "@/lib/auth";
 
-// Motivational quotes array
 const motivationalQuotes = [
   "Stay focused. You've got this!",
   "Small progress is still progress.",
@@ -29,11 +27,10 @@ const motivationalQuotes = [
 ];
 
 const Dashboard: React.FC = () => {
-  // Time-based greeting
+
   const [greeting, setGreeting] = useState("");
   const [userName, setUserName] = useState(localStorage.getItem('userName') || 'User');
-  
-  // Task and stats state
+
   const [recentTasks, setRecentTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState([
@@ -43,13 +40,11 @@ const Dashboard: React.FC = () => {
     { title: "Completion Rate", value: "0%", icon: <BarChart size={18} /> }
   ]);
 
-  // Fetch data and set initial state
   useEffect(() => {
     const loadDashboard = async () => {
       try {
         setIsLoading(true);
-        
-        // Determine greeting based on time of day
+
         const hour = new Date().getHours();
         if (hour < 12) {
           setGreeting(`Good Morning, ${userName}! 🌅`);
@@ -58,21 +53,20 @@ const Dashboard: React.FC = () => {
         } else {
           setGreeting(`Good Evening, ${userName}! 🌙`);
         }
-        
+
         const user = getCurrentUser();
         if (user) {
-          // Fetch tasks from Firebase
+
           const tasks = await getTasks();
-          setRecentTasks(tasks.slice(0, 4)); // Get 4 most recent tasks
-          
-          // Calculate task statistics
+          setRecentTasks(tasks.slice(0, 4));
+
           const totalTasks = tasks.length;
           const inProgressTasks = tasks.filter(task => task.status === 'in-progress').length;
           const completedTasks = tasks.filter(task => task.status === 'completed').length;
-          const completionRate = totalTasks > 0 
-            ? Math.round((completedTasks / totalTasks) * 100) 
+          const completionRate = totalTasks > 0
+            ? Math.round((completedTasks / totalTasks) * 100)
             : 0;
-          
+
           setStats([
             { title: "Total Tasks", value: totalTasks, icon: <CheckCircle size={18} /> },
             { title: "In Progress", value: inProgressTasks, icon: <Clock size={18} /> },
@@ -80,7 +74,7 @@ const Dashboard: React.FC = () => {
             { title: "Completion Rate", value: `${completionRate}%`, icon: <BarChart size={18} /> }
           ]);
         } else {
-          // If not authenticated, show mock data for preview
+
           setRecentTasks([
             {
               id: "1",
@@ -107,11 +101,10 @@ const Dashboard: React.FC = () => {
         setIsLoading(false);
       }
     };
-    
+
     loadDashboard();
   }, [userName]);
 
-  // Add handlers for task card actions
   const handleEditTask = (task: Task) => {
     toast.info(`Edit task: ${task.title}`);
   };
@@ -123,14 +116,14 @@ const Dashboard: React.FC = () => {
   const handleStatusChange = async (taskId: string, newStatus: Task['status']) => {
     try {
       await updateTask(taskId, { status: newStatus });
-      
-      const updatedTasks = recentTasks.map(task => 
+
+      const updatedTasks = recentTasks.map(task =>
         task.id === taskId ? { ...task, status: newStatus } : task
       );
-      
+
       setRecentTasks(updatedTasks);
       toast.success("Task status updated");
-      
+
     } catch (error) {
       console.error("Error updating task status:", error);
       toast.error("Failed to update task status");
@@ -143,12 +136,11 @@ const Dashboard: React.FC = () => {
 
       <DashboardStats stats={stats} />
 
-      {/* Main Dashboard Grid */}
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 lg:gap-6">
-        {/* Left Column - Timer and Tasks */}
+
         <div className="xl:col-span-2 space-y-4 lg:space-y-6">
           <CompactTimer />
-          
+
           <RecentTasksSection
             tasks={recentTasks}
             isLoading={isLoading}
@@ -158,7 +150,6 @@ const Dashboard: React.FC = () => {
           />
         </div>
 
-        {/* Right Column - New Dashboard Components */}
         <div className="xl:col-span-2 space-y-4 lg:space-y-6">
           <QuickActionsPanel />
           <GoalsProgress />

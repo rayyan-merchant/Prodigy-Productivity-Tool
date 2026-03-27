@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,7 +24,7 @@ interface FocusSession {
   name: string;
   isActive: boolean;
   startTime: Date;
-  duration: number; // in minutes
+  duration: number;
   blockedSites: string[];
   allowedBreaks: number;
   breaksUsed: number;
@@ -41,7 +40,6 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
   const [strictMode, setStrictMode] = useState(false);
   const { toast } = useToast();
 
-  // Default blocked sites
   const defaultBlockedSites: BlockedSite[] = [
     { id: '1', url: 'facebook.com', category: 'Social Media' },
     { id: '2', url: 'twitter.com', category: 'Social Media' },
@@ -55,7 +53,7 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
-      // Load saved settings or use defaults
+
       const savedSites = localStorage.getItem('focus-mode-blocked-sites');
       if (savedSites) {
         setBlockedSites(JSON.parse(savedSites));
@@ -72,12 +70,11 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
         setStrictMode(settings.strictMode || false);
       }
 
-      // Mock active session
       const mockSession: FocusSession = {
         id: '1',
         name: 'Deep Work Session',
         isActive: true,
-        startTime: new Date(Date.now() - 15 * 60 * 1000), // Started 15 minutes ago
+        startTime: new Date(Date.now() - 15 * 60 * 1000),
         duration: 60,
         blockedSites: ['facebook.com', 'twitter.com', 'youtube.com'],
         allowedBreaks: 2,
@@ -108,7 +105,6 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
       return;
     }
 
-    // Clean up URL
     let cleanUrl = newSiteUrl.trim().toLowerCase();
     cleanUrl = cleanUrl.replace(/^https?:\/\//, '').replace(/^www\./, '');
 
@@ -129,7 +125,7 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
 
     setBlockedSites([...blockedSites, newSite]);
     setNewSiteUrl('');
-    
+
     toast({
       title: "Website Added",
       description: `${cleanUrl} has been added to your blocked list`
@@ -147,11 +143,11 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
   const toggleFocusMode = () => {
     setIsEnabled(!isEnabled);
     saveSettings();
-    
+
     toast({
       title: isEnabled ? "Focus Mode Disabled" : "Focus Mode Enabled",
-      description: isEnabled 
-        ? "Website blocking has been disabled" 
+      description: isEnabled
+        ? "Website blocking has been disabled"
         : "Website blocking is now active"
     });
   };
@@ -179,7 +175,7 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
       return session;
     });
     setActiveSessions(updatedSessions);
-    
+
     toast({
       title: "Break Started",
       description: "You have 5 minutes before focus mode re-activates"
@@ -217,9 +213,9 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Left Column - Settings */}
+
             <div className="space-y-6">
-              {/* Focus Mode Toggle */}
+
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
@@ -235,7 +231,7 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    {isEnabled 
+                    {isEnabled
                       ? "Focus mode is active. Distracting websites are blocked."
                       : "Focus mode is disabled. All websites are accessible."
                     }
@@ -243,7 +239,6 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
                 </CardContent>
               </Card>
 
-              {/* Blocked Websites */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -263,7 +258,7 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
                       <Plus className="h-4 w-4" />
                     </Button>
                   </div>
-                  
+
                   <div className="max-h-64 overflow-y-auto space-y-2">
                     {blockedSites.map((site) => (
                       <div key={site.id} className="flex items-center justify-between p-3 border rounded-lg">
@@ -287,7 +282,6 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
                 </CardContent>
               </Card>
 
-              {/* Advanced Settings */}
               <Card>
                 <CardHeader>
                   <CardTitle>Advanced Settings</CardTitle>
@@ -305,7 +299,7 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
                       onCheckedChange={setAllowNotifications}
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium">Strict Mode</p>
@@ -318,7 +312,7 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
                       onCheckedChange={setStrictMode}
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <label className="font-medium">Custom Block Message</label>
                     <Textarea
@@ -328,7 +322,7 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
                       className="min-h-[80px]"
                     />
                   </div>
-                  
+
                   <Button onClick={saveSettings} className="w-full">
                     Save Settings
                   </Button>
@@ -336,9 +330,8 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
               </Card>
             </div>
 
-            {/* Right Column - Active Sessions */}
             <div className="space-y-6">
-              {/* Quick Start */}
+
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -365,7 +358,6 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
                 </CardContent>
               </Card>
 
-              {/* Active Sessions */}
               <Card>
                 <CardHeader>
                   <CardTitle>Active Focus Sessions</CardTitle>
@@ -393,14 +385,14 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
                               </div>
                               <Badge variant="default">Active</Badge>
                             </div>
-                            
+
                             <div className="w-full bg-muted rounded-full h-2">
-                              <div 
+                              <div
                                 className="bg-primary h-2 rounded-full transition-all duration-300"
                                 style={{ width: `${progress}%` }}
                               />
                             </div>
-                            
+
                             <div className="flex items-center justify-between text-sm">
                               <div className="flex items-center gap-2">
                                 <CheckCircle className="h-4 w-4 text-green-500" />
@@ -410,7 +402,7 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
                                 Breaks: {session.breaksUsed}/{session.allowedBreaks}
                               </span>
                             </div>
-                            
+
                             <div className="flex gap-2">
                               <Button
                                 variant="outline"
@@ -438,7 +430,6 @@ const FocusMode: React.FC<FocusModeProps> = ({ isOpen, onClose }) => {
                 </CardContent>
               </Card>
 
-              {/* Statistics */}
               <Card>
                 <CardHeader>
                   <CardTitle>Focus Statistics</CardTitle>

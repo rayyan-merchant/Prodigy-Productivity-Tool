@@ -1,13 +1,10 @@
-
 import { db } from '@/lib/firebase';
 import { collection, query, where, orderBy, getDocs, doc, updateDoc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { getCurrentUser } from '@/lib/auth';
 import type { Notification } from '@/types/notifications';
 
-// Re-export the Notification type to fix import issues
 export type { Notification } from '@/types/notifications';
 
-// Notification sound utility
 let audioContext: AudioContext | null = null;
 
 const initAudioContext = () => {
@@ -20,41 +17,37 @@ const initAudioContext = () => {
 const playNotificationSound = () => {
   try {
     const context = initAudioContext();
-    
-    // Create three short "ting" sounds
-    const frequencies = [800, 600, 400]; // Different pitches for "ting ting ting"
-    
+
+    const frequencies = [800, 600, 400];
+
     frequencies.forEach((freq, index) => {
       setTimeout(() => {
         const oscillator = context.createOscillator();
         const gainNode = context.createGain();
-        
+
         oscillator.connect(gainNode);
         gainNode.connect(context.destination);
-        
+
         oscillator.frequency.setValueAtTime(freq, context.currentTime);
         oscillator.type = 'sine';
-        
-        // Envelope for bell-like sound
+
         gainNode.gain.setValueAtTime(0, context.currentTime);
         gainNode.gain.linearRampToValueAtTime(0.3, context.currentTime + 0.01);
         gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.3);
-        
+
         oscillator.start(context.currentTime);
         oscillator.stop(context.currentTime + 0.3);
-      }, index * 200); // 200ms between each "ting"
+      }, index * 200);
     });
   } catch (error) {
     console.error('Error playing notification sound:', error);
   }
 };
 
-// Check if notifications are enabled
 const areNotificationsEnabled = (): boolean => {
   return localStorage.getItem('notifications-enabled') !== 'false';
 };
 
-// Request notification permission
 export const requestNotificationPermission = async (): Promise<boolean> => {
   if (!('Notification' in window)) {
     console.warn('This browser does not support notifications');
@@ -73,10 +66,9 @@ export const requestNotificationPermission = async (): Promise<boolean> => {
   return false;
 };
 
-// Show browser notification
 const showBrowserNotification = (title: string, message: string, icon?: string) => {
   if (!areNotificationsEnabled()) return;
-  
+
   if (Notification.permission === 'granted') {
     const notification = new Notification(title, {
       body: message,
@@ -87,15 +79,12 @@ const showBrowserNotification = (title: string, message: string, icon?: string) 
       silent: false
     });
 
-    // Auto close after 5 seconds
     setTimeout(() => notification.close(), 5000);
-    
-    // Play sound
+
     playNotificationSound();
   }
 };
 
-// Get all notifications for the current user
 export const getUserNotifications = async (): Promise<Notification[]> => {
   try {
     const user = getCurrentUser();
@@ -107,7 +96,7 @@ export const getUserNotifications = async (): Promise<Notification[]> => {
       where('userId', '==', user.uid),
       orderBy('timestamp', 'desc')
     );
-    
+
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({
       id: doc.id,
@@ -120,7 +109,6 @@ export const getUserNotifications = async (): Promise<Notification[]> => {
   }
 };
 
-// Mark notification as read
 export const markNotificationAsRead = async (notificationId: string): Promise<void> => {
   try {
     const notificationRef = doc(db, 'notifications', notificationId);
@@ -133,7 +121,6 @@ export const markNotificationAsRead = async (notificationId: string): Promise<vo
   }
 };
 
-// Create a new notification
 export const createNotification = async (notification: Partial<Notification>): Promise<string> => {
   try {
     const user = getCurrentUser();
@@ -152,10 +139,9 @@ export const createNotification = async (notification: Partial<Notification>): P
 
     const notificationsRef = collection(db, 'notifications');
     const docRef = await addDoc(notificationsRef, notificationData);
-    
-    // Show browser notification
+
     showBrowserNotification(notificationData.title, notificationData.message);
-    
+
     return docRef.id;
   } catch (error) {
     console.error('Error creating notification:', error);
@@ -163,7 +149,6 @@ export const createNotification = async (notification: Partial<Notification>): P
   }
 };
 
-// Specific notification types
 export const sendPomodoroNotification = async (type: 'session_start' | 'session_end' | 'break_start' | 'break_end' | 'long_break_start') => {
   const notifications = {
     'session_start': {
@@ -203,7 +188,7 @@ export const sendGoalMotivationNotification = async (goalTitle: string, progress
     `💪 "${goalTitle}" is within reach. Stay focused!`,
     `🚀 Great progress on "${goalTitle}"! Don't stop now.`
   ];
-  
+
   await createNotification({
     title: 'Goal Progress Update',
     message: messages[Math.floor(Math.random() * messages.length)],
@@ -217,7 +202,7 @@ export const sendHabitReminderNotification = async (habitName: string, streak: n
     `⭐ Time for "${habitName}" - keep the momentum going!`,
     `💎 Your "${habitName}" habit is building discipline. Stay consistent!`
   ];
-  
+
   await createNotification({
     title: 'Habit Reminder',
     message: messages[Math.floor(Math.random() * messages.length)],
@@ -232,7 +217,7 @@ export const sendDeadlineReminderNotification = async (taskTitle: string, daysLe
     warning: `⚠️ "${taskTitle}" is due in ${daysLeft} days.`,
     info: `📅 Reminder: "${taskTitle}" is due in ${daysLeft} days.`
   };
-  
+
   await createNotification({
     title: 'Deadline Reminder',
     message: messages[urgencyLevel],
@@ -271,12 +256,11 @@ export const sendMotivationalNotification = async () => {
       message: 'Every expert was once a beginner. Keep learning and growing!'
     }
   ];
-  
+
   const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
   await createNotification(randomMessage);
 };
 
-// Settings helpers
 export const setNotificationsEnabled = (enabled: boolean) => {
   localStorage.setItem('notifications-enabled', enabled.toString());
 };

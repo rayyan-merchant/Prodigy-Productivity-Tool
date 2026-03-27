@@ -1,4 +1,3 @@
-
 import React from 'react';
 import DateRangeSelector from '@/components/analytics/DateRangeSelector';
 import SummaryCards from '@/components/analytics/SummaryCards';
@@ -14,7 +13,7 @@ const Analytics = () => {
   return (
     <div className="p-6 space-y-6 fade-in">
       <h1 className="text-3xl font-bold">Analytics</h1>
-      
+
       <AnalyticsContainer>
         {({
           isLoading,
@@ -40,7 +39,7 @@ const Analytics = () => {
             <div className="flex justify-end">
               <DateRangeSelector dateRange={dateRangeType} setDateRange={handleDateRangeChange} />
             </div>
-            
+
             {isLoading ? (
               <div className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -51,7 +50,7 @@ const Analytics = () => {
               </div>
             ) : hasData ? (
               <>
-                <SummaryCards 
+                <SummaryCards
                   isLoading={false}
                   totalFocusTime={totalFocusTime}
                   thisWeekFocusTime={thisWeekFocusTime}
@@ -60,33 +59,33 @@ const Analytics = () => {
                   thisWeekCompletedTasks={thisWeekCompletedTasks}
                   todayCompletedTasks={todayCompletedTasks}
                 />
-                
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <TaskCompletionChart 
-                    isLoading={false} 
-                    taskData={taskData} 
-                    totalCompletedTasks={totalCompletedTasks} 
+                  <TaskCompletionChart
+                    isLoading={false}
+                    taskData={taskData}
+                    totalCompletedTasks={totalCompletedTasks}
                   />
-                  <FocusTimeChart 
-                    isLoading={false} 
-                    focusData={focusData} 
-                    totalFocusTime={totalFocusTime} 
+                  <FocusTimeChart
+                    isLoading={false}
+                    focusData={focusData}
+                    totalFocusTime={totalFocusTime}
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-                  <ProjectTimeDistribution 
-                    isLoading={false} 
-                    projectTimeData={projectTimeData} 
+                  <ProjectTimeDistribution
+                    isLoading={false}
+                    projectTimeData={projectTimeData}
                   />
-                  <WeeklyAiInsights 
+                  <WeeklyAiInsights
                     completedTasks={completedTasks}
                     focusHours={focusHours}
                     sessionsCompleted={sessionsCompleted}
                   />
                 </div>
-                
-                <ProductivityInsights 
+
+                <ProductivityInsights
                   isLoading={false}
                   filteredSessions={sessions}
                   filteredTasks={tasks}

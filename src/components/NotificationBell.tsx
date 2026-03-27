@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Bell } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -31,13 +30,12 @@ const NotificationBell: React.FC = () => {
 
     fetchNotifications();
 
-    // Poll for notifications every minute
     const interval = setInterval(fetchNotifications, 60000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    // Close dropdown when clicking outside
+
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -47,7 +45,7 @@ const NotificationBell: React.FC = () => {
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-    
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -59,10 +57,9 @@ const NotificationBell: React.FC = () => {
     try {
       if (!notification.read) {
         await markNotificationAsRead(notification.id);
-        
-        // Update local state
-        setNotifications(prevNotifications => 
-          prevNotifications.map(n => 
+
+        setNotifications(prevNotifications =>
+          prevNotifications.map(n =>
             n.id === notification.id ? { ...n, read: true } : n
           )
         );
@@ -90,7 +87,7 @@ const NotificationBell: React.FC = () => {
       >
         <Bell size={20} />
         {notifications.filter(n => !n.read).length > 0 && (
-          <Badge 
+          <Badge
             variant="destructive"
             className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
           >

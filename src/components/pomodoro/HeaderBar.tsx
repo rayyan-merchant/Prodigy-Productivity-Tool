@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Timer, Menu } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -51,7 +50,7 @@ const HeaderBar: React.FC = () => {
             </SheetHeader>
             <div className="mt-6 space-y-4">
               {navItems.map((item) => (
-                <Button 
+                <Button
                   key={item.label}
                   variant="ghost"
                   className="w-full justify-start hover:bg-[#D2353E]/10 hover:text-[#D2353E]"

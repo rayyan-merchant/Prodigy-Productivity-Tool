@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getPomodoroSettings, savePomodoroSettings } from '@/services/pomodoroSettingsService';
 import { getCurrentUser } from '@/lib/auth';
@@ -32,7 +31,6 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [sessionsCompleted, setSessionsCompleted] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load settings from Firebase on mount
   useEffect(() => {
     const loadSettings = async () => {
       try {
@@ -46,7 +44,7 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             longBreakInterval: pomodoroSettings.longBreakInterval,
           });
         } else {
-          // If no user, try to load from localStorage as fallback
+
           const savedSettings = localStorage.getItem('timer-settings');
           if (savedSettings) {
             const parsed = JSON.parse(savedSettings);
@@ -55,7 +53,7 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
       } catch (error) {
         console.error('Error loading timer settings:', error);
-        // Fallback to localStorage
+
         const savedSettings = localStorage.getItem('timer-settings');
         if (savedSettings) {
           const parsed = JSON.parse(savedSettings);
@@ -73,16 +71,15 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       const user = getCurrentUser();
       if (user) {
-        // Save to Firebase
+
         await savePomodoroSettings(newSettings);
       }
-      
-      // Also save to localStorage as backup
+
       localStorage.setItem('timer-settings', JSON.stringify(newSettings));
       setSettings(newSettings);
     } catch (error) {
       console.error('Error saving timer settings:', error);
-      // If Firebase fails, at least save to localStorage
+
       localStorage.setItem('timer-settings', JSON.stringify(newSettings));
       setSettings(newSettings);
       throw error;
@@ -97,17 +94,16 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setSessionsCompleted((prev) => prev + 1);
   };
 
-  // Don't render children until settings are loaded
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <TimerContext.Provider 
-      value={{ 
-        settings, 
-        updateSettings, 
-        sessionsCompleted, 
+    <TimerContext.Provider
+      value={{
+        settings,
+        updateSettings,
+        sessionsCompleted,
         incrementSession,
         incrementSessionsCompleted
       }}

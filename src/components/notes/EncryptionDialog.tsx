@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Lock, Unlock, Eye, EyeOff } from 'lucide-react';
 import {
@@ -22,9 +21,9 @@ interface EncryptionDialogProps {
   content: string;
   passwordHash?: string;
   salt?: string;
-  onSuccess: (result: { 
-    content: string; 
-    isEncrypted: boolean; 
+  onSuccess: (result: {
+    content: string;
+    isEncrypted: boolean;
     encryptedContent?: string;
     passwordHash?: string;
     salt?: string;
@@ -79,7 +78,6 @@ const EncryptionDialog: React.FC<EncryptionDialogProps> = ({
           return;
         }
 
-        // Verify password first
         const isValidPassword = await NoteEncryption.verifyPassword(password, passwordHash, salt);
         if (!isValidPassword) {
           toast.error('Incorrect password');
@@ -125,7 +123,7 @@ const EncryptionDialog: React.FC<EncryptionDialogProps> = ({
             {mode === 'encrypt' ? 'Encrypt Note' : 'Decrypt Note'}
           </DialogTitle>
           <DialogDescription>
-            {mode === 'encrypt' 
+            {mode === 'encrypt'
               ? 'Enter a password to encrypt this note. Make sure to remember it!'
               : 'Enter the password to decrypt this note.'
             }

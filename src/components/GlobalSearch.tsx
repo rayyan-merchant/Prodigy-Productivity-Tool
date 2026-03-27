@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from "@/components/ui/input";
@@ -6,7 +5,6 @@ import { Task } from '@/services/taskService';
 import { Note } from '@/types/notes';
 import { useNavigate } from 'react-router-dom';
 
-// Define the search result types
 type SearchResultItem = {
   id: string;
   title: string;
@@ -28,7 +26,6 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ tasks = [], notes = [] }) =
   const resultsRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  // Transform tasks and notes into searchable items
   const searchableItems = [
     ...tasks.map(task => ({
       id: task.id,
@@ -46,7 +43,6 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ tasks = [], notes = [] }) =
     }))
   ];
 
-  // Filter items based on search query
   useEffect(() => {
     if (!query) {
       setResults([]);
@@ -56,7 +52,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ tasks = [], notes = [] }) =
     const lowerCaseQuery = query.toLowerCase();
     const filtered = searchableItems.filter(item => {
       return (
-        item.title.toLowerCase().includes(lowerCaseQuery) || 
+        item.title.toLowerCase().includes(lowerCaseQuery) ||
         (item.content && item.content.toLowerCase().includes(lowerCaseQuery))
       );
     });
@@ -64,10 +60,9 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ tasks = [], notes = [] }) =
     setResults(filtered);
   }, [query, searchableItems]);
 
-  // Handle keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // CMD+K or CTRL+K to open search
+
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
         setIsOpen(true);
@@ -75,8 +70,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ tasks = [], notes = [] }) =
           inputRef.current?.focus();
         }, 100);
       }
-      
-      // ESC to close search
+
       if (e.key === 'Escape') {
         setIsOpen(false);
       }
@@ -88,7 +82,6 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ tasks = [], notes = [] }) =
     };
   }, []);
 
-  // Close search dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -116,7 +109,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ tasks = [], notes = [] }) =
 
   return (
     <div className="relative">
-      <div 
+      <div
         className="flex items-center border rounded-md px-3 py-2 bg-background cursor-pointer"
         onClick={() => setIsOpen(true)}
       >
@@ -141,7 +134,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ tasks = [], notes = [] }) =
                 />
               </div>
             </div>
-            
+
             <div ref={resultsRef} className="max-h-72 overflow-y-auto">
               {results.length > 0 ? (
                 <div className="py-2">

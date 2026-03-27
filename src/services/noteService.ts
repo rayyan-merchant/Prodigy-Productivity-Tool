@@ -4,7 +4,6 @@ import { getCurrentUser } from '@/lib/auth';
 import { Note, ChecklistItemData } from '@/types/notes';
 import { createNoteActivity } from '@/services/activityService';
 
-// Convert Firestore note to our Note type
 const convertFirestoreNote = (doc: any): Note => {
   const data = doc.data();
   return {
@@ -28,7 +27,6 @@ const convertFirestoreNote = (doc: any): Note => {
   };
 };
 
-// Get all notes for the current user
 export const getNotes = async (): Promise<Note[]> => {
   try {
     const user = getCurrentUser();
@@ -36,7 +34,7 @@ export const getNotes = async (): Promise<Note[]> => {
       user: user ? { uid: user.uid, email: user.email } : null,
       authCurrentUser: !!user
     });
-    
+
     if (!user) {
       console.error('❌ [NOTES] User not authenticated in getNotes');
       throw new Error('User not authenticated');
@@ -45,9 +43,9 @@ export const getNotes = async (): Promise<Note[]> => {
     console.log('📥 [NOTES] Fetching notes for user:', user.uid);
     const notesRef = collection(db, 'users', user.uid, 'notes');
     console.log('📍 [NOTES] Collection path:', `users/${user.uid}/notes`);
-    
+
     const q = query(notesRef, orderBy('updatedAt', 'desc'));
-    
+
     const querySnapshot = await getDocs(q);
     const notes = querySnapshot.docs.map(convertFirestoreNote);
     console.log('✅ [NOTES] Successfully fetched notes:', notes.length);
@@ -63,7 +61,6 @@ export const getNotes = async (): Promise<Note[]> => {
   }
 };
 
-// Get a single note by ID
 export const getNoteById = async (noteId: string): Promise<Note> => {
   try {
     const user = getCurrentUser();
@@ -74,11 +71,11 @@ export const getNoteById = async (noteId: string): Promise<Note> => {
 
     const noteRef = doc(db, 'users', user.uid, 'notes', noteId);
     const noteDoc = await getDoc(noteRef);
-    
+
     if (!noteDoc.exists()) {
       throw new Error('Note not found');
     }
-    
+
     console.log('Successfully fetched note:', noteId);
     return convertFirestoreNote(noteDoc);
   } catch (error) {
@@ -87,16 +84,15 @@ export const getNoteById = async (noteId: string): Promise<Note> => {
   }
 };
 
-// Create a new note
 export const createNote = async (noteData: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>): Promise<Note> => {
   const user = getCurrentUser();
-  
+
   try {
     console.log('🔍 [NOTES] Create - Authentication check:', {
       user: user ? { uid: user.uid, email: user.email } : null,
       authenticated: !!user
     });
-    
+
     if (!user) {
       console.error('❌ [NOTES] User not authenticated in createNote');
       throw new Error('User not authenticated');
@@ -104,25 +100,24 @@ export const createNote = async (noteData: Omit<Note, 'id' | 'createdAt' | 'upda
 
     console.log('📝 [NOTES] Creating note for user:', user.uid);
     console.log('📝 [NOTES] Note data:', noteData);
-    
+
     const now = Timestamp.now();
     const notesRef = collection(db, 'users', user.uid, 'notes');
     console.log('📍 [NOTES] Target collection path:', `users/${user.uid}/notes`);
-    
+
     const dataToSave = {
       ...noteData,
       createdAt: now,
       updatedAt: now,
       userId: user.uid
     };
-    
+
     console.log('💾 [NOTES] Data being saved to Firestore:', dataToSave);
-    
+
     const docRef = await addDoc(notesRef, dataToSave);
 
     console.log('✅ [NOTES] Successfully created note with ID:', docRef.id);
-    
-    // Create activity for note creation
+
     await createNoteActivity(
       'New note created',
       `"${noteData.title}" was created`,
@@ -143,19 +138,17 @@ export const createNote = async (noteData: Omit<Note, 'id' | 'createdAt' | 'upda
       stack: error.stack,
       name: error.name
     });
-    
-    // Check for common Firestore permission errors
+
     if (error.code === 'permission-denied') {
       console.error('🚫 [NOTES] PERMISSION DENIED - Check Firestore security rules!');
       console.error('🚫 [NOTES] Current user:', user?.uid);
       console.error('🚫 [NOTES] Attempted path:', `users/${user?.uid}/notes`);
     }
-    
+
     throw error;
   }
 };
 
-// Update an existing note
 export const updateNote = async (noteId: string, noteData: Partial<Omit<Note, 'id' | 'createdAt' | 'updatedAt'>>): Promise<void> => {
   try {
     const user = getCurrentUser();
@@ -166,15 +159,14 @@ export const updateNote = async (noteId: string, noteData: Partial<Omit<Note, 'i
 
     console.log('Updating note:', noteId, noteData);
     const noteRef = doc(db, 'users', user.uid, 'notes', noteId);
-    
+
     await updateDoc(noteRef, {
       ...noteData,
       updatedAt: Timestamp.now()
     });
-    
+
     console.log('Successfully updated note:', noteId);
-    
-    // Create activity for note update
+
     if (noteData.title) {
       await createNoteActivity(
         'Note updated',
@@ -188,7 +180,6 @@ export const updateNote = async (noteId: string, noteData: Partial<Omit<Note, 'i
   }
 };
 
-// Delete a note
 export const deleteNote = async (noteId: string): Promise<void> => {
   try {
     const user = getCurrentUser();
@@ -197,7 +188,6 @@ export const deleteNote = async (noteId: string): Promise<void> => {
       throw new Error('User not authenticated');
     }
 
-    // Get note title before deletion for activity
     const noteRef = doc(db, 'users', user.uid, 'notes', noteId);
     const noteDoc = await getDoc(noteRef);
     const noteTitle = noteDoc.exists() ? noteDoc.data().title : 'Unknown note';
@@ -205,8 +195,7 @@ export const deleteNote = async (noteId: string): Promise<void> => {
     console.log('Deleting note:', noteId);
     await deleteDoc(noteRef);
     console.log('Successfully deleted note:', noteId);
-    
-    // Create activity for note deletion
+
     await createNoteActivity(
       'Note deleted',
       `"${noteTitle}" was deleted`,
@@ -218,7 +207,6 @@ export const deleteNote = async (noteId: string): Promise<void> => {
   }
 };
 
-// Create a checklist note
 export const createChecklistNote = async (title: string, checklistItems: ChecklistItemData[]): Promise<Note> => {
   return createNote({
     title,
@@ -232,7 +220,6 @@ export const createChecklistNote = async (title: string, checklistItems: Checkli
   });
 };
 
-// Update checklist items for a note
 export const updateChecklistItems = async (noteId: string, checklistItems: ChecklistItemData[]): Promise<void> => {
   return updateNote(noteId, {
     checklistItems,

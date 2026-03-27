@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Calendar } from 'lucide-react';
 
 const FeaturePreview: React.FC = () => {
   return (
     <div className="px-6 md:px-12 lg:px-24 py-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-      {/* Chart - Updated as requested */}
+
       <div className="bg-white rounded-2xl shadow p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-medium">Productivity Trend</h3>
@@ -22,7 +21,7 @@ const FeaturePreview: React.FC = () => {
             { day: "Sun", height: "70%" }
           ].map((item, index) => (
             <div key={item.day} className="flex flex-col items-center flex-1">
-              <div 
+              <div
                 className={`w-full ${item.highlight ? 'bg-blue-400' : 'bg-[#FFA5A5]'}`}
                 style={{ height: item.height }}
               ></div>
@@ -32,7 +31,6 @@ const FeaturePreview: React.FC = () => {
         </div>
       </div>
 
-      {/* Timer */}
       <div className="bg-white rounded-2xl shadow p-6 flex flex-col items-center justify-center">
         <div className="w-40 h-40 rounded-full border-8 border-[#FFA5A5] relative flex items-center justify-center">
           <div className="absolute w-1 h-16 bg-[#FFA5A5] top-0 left-1/2 transform -translate-x-1/2 origin-bottom rotate-0"></div>
@@ -44,7 +42,6 @@ const FeaturePreview: React.FC = () => {
         </div>
       </div>
 
-      {/* Tasks - Updated as requested with hover effect */}
       <div className="bg-white rounded-2xl shadow p-6 flex flex-col justify-center">
         <div className="space-y-4">
           <button className="bg-[#FFA5A5] text-white py-2 px-4 rounded-full w-full hover:bg-[#ff8c8c] transition-colors">

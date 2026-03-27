@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Target, Plus, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,7 +16,7 @@ const GoalsProgress: React.FC = () => {
     const fetchGoals = async () => {
       try {
         const fetchedGoals = await getGoals();
-        // Show only the top 3 most recent goals
+
         setGoals(fetchedGoals.slice(0, 3));
       } catch (error) {
         console.error('Error fetching goals:', error);

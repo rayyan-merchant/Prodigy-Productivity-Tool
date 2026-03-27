@@ -15,7 +15,6 @@ export const useOfflineSync = () => {
   const [pendingSync, setPendingSync] = useState<OfflineSyncItem[]>([]);
   const [isSyncing, setIsSyncing] = useState(false);
 
-  // Load pending sync items on mount
   useEffect(() => {
     const loadPendingItems = () => {
       const offlineData = localStorage.getItem('offlineData');
@@ -33,7 +32,6 @@ export const useOfflineSync = () => {
     loadPendingItems();
   }, []);
 
-  // Queue an action for offline sync
   const queueOfflineAction = useCallback((item: Omit<OfflineSyncItem, 'timestamp'>) => {
     const syncItem: OfflineSyncItem = {
       ...item,
@@ -44,7 +42,6 @@ export const useOfflineSync = () => {
     setPendingSync(prev => [...prev, syncItem]);
   }, [saveOfflineData]);
 
-  // Sync pending items when online
   const syncPendingItems = useCallback(async () => {
     if (!isOnline || isSyncing || pendingSync.length === 0) return;
 
@@ -54,17 +51,15 @@ export const useOfflineSync = () => {
     try {
       for (const item of pendingSync) {
         try {
-          // Here you would implement actual sync logic for each item type
-          // For now, we'll just simulate success
+
           await new Promise(resolve => setTimeout(resolve, 100));
-          
-          // Mark as synced in localStorage
+
           const offlineData = JSON.parse(localStorage.getItem('offlineData') || '{}');
           if (offlineData[item.id]) {
             offlineData[item.id].synced = true;
             localStorage.setItem('offlineData', JSON.stringify(offlineData));
           }
-          
+
           successCount++;
         } catch (error) {
           console.error(`Failed to sync item ${item.id}:`, error);
@@ -87,10 +82,9 @@ export const useOfflineSync = () => {
     }
   }, [isOnline, isSyncing, pendingSync, clearSyncedData]);
 
-  // Auto-sync when coming online
   useEffect(() => {
     if (isOnline && pendingSync.length > 0) {
-      const timer = setTimeout(syncPendingItems, 1000); // Delay to ensure connection is stable
+      const timer = setTimeout(syncPendingItems, 1000);
       return () => clearTimeout(timer);
     }
   }, [isOnline, pendingSync.length, syncPendingItems]);

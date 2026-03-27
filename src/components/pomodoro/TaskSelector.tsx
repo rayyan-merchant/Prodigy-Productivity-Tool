@@ -23,8 +23,8 @@ const TaskSelector: React.FC<TaskSelectorProps> = ({ selectedTask, onTaskSelect,
       try {
         setIsLoading(true);
         const fetchedTasks = await getTasks();
-        // Filter to show only todo and in-progress tasks
-        const activeTasks = fetchedTasks.filter(task => 
+
+        const activeTasks = fetchedTasks.filter(task =>
           task.status === 'todo' || task.status === 'in-progress'
         );
         setTasks(activeTasks);

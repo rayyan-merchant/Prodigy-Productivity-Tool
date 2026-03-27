@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 
@@ -13,7 +12,7 @@ export const useOffline = () => {
         toast.success('🌐 Back online! Syncing your data...', {
           duration: 3000,
         });
-        // Trigger data sync
+
         const syncEvent = new CustomEvent('syncOfflineData');
         window.dispatchEvent(syncEvent);
         setWasOffline(false);
@@ -38,7 +37,6 @@ export const useOffline = () => {
     };
   }, [wasOffline]);
 
-  // Save data to localStorage when offline
   const saveOfflineData = (key: string, data: any) => {
     try {
       const offlineData = JSON.parse(localStorage.getItem('offlineData') || '{}');
@@ -55,7 +53,6 @@ export const useOffline = () => {
     }
   };
 
-  // Get offline data
   const getOfflineData = (key: string) => {
     try {
       const offlineData = JSON.parse(localStorage.getItem('offlineData') || '{}');
@@ -66,7 +63,6 @@ export const useOffline = () => {
     }
   };
 
-  // Clear synced offline data
   const clearSyncedData = () => {
     try {
       const offlineData = JSON.parse(localStorage.getItem('offlineData') || '{}');

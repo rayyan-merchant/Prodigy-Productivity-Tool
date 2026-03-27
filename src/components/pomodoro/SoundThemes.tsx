@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -49,11 +48,11 @@ const SoundThemes: React.FC<SoundThemesProps> = ({ isOpen, onClose }) => {
   ];
 
   useEffect(() => {
-    // Load saved preferences
+
     const savedTheme = localStorage.getItem('pomodoro-sound-theme') || 'default';
     const savedVolume = localStorage.getItem('pomodoro-sound-volume');
     const savedEnabled = localStorage.getItem('pomodoro-sound-enabled') !== 'false';
-    
+
     setSelectedTheme(savedTheme);
     setVolume(savedVolume ? [parseInt(savedVolume)] : [50]);
     setSoundEnabled(savedEnabled);
@@ -77,7 +76,7 @@ const SoundThemes: React.FC<SoundThemesProps> = ({ isOpen, onClose }) => {
 
   const playPreview = (soundPath: string) => {
     if (!soundEnabled) return;
-    
+
     try {
       const audio = new Audio(soundPath);
       audio.volume = volume[0] / 100;
@@ -90,7 +89,7 @@ const SoundThemes: React.FC<SoundThemesProps> = ({ isOpen, onClose }) => {
   };
 
   const handleSave = () => {
-    // Save all preferences
+
     localStorage.setItem('pomodoro-sound-theme', selectedTheme);
     localStorage.setItem('pomodoro-sound-volume', volume[0].toString());
     localStorage.setItem('pomodoro-sound-enabled', soundEnabled.toString());
@@ -108,7 +107,6 @@ const SoundThemes: React.FC<SoundThemesProps> = ({ isOpen, onClose }) => {
             <Button variant="outline" onClick={onClose}>Close</Button>
           </div>
 
-          {/* Sound Enable/Disable */}
           <Card className="mb-6">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -127,7 +125,7 @@ const SoundThemes: React.FC<SoundThemesProps> = ({ isOpen, onClose }) => {
                   {soundEnabled ? 'Enabled' : 'Disabled'}
                 </Button>
               </div>
-              
+
               {soundEnabled && (
                 <div className="space-y-2">
                   <Label htmlFor="volume">Volume: {volume[0]}%</Label>
@@ -144,7 +142,6 @@ const SoundThemes: React.FC<SoundThemesProps> = ({ isOpen, onClose }) => {
             </CardContent>
           </Card>
 
-          {/* Theme Selection */}
           <Card className="mb-6">
             <CardHeader>
               <CardTitle>Choose Sound Theme</CardTitle>

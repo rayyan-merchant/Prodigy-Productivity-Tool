@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -20,7 +19,6 @@ const EmailVerification: React.FC = () => {
       setUserEmail(user.email || '');
     }
 
-    // Listen for auth state changes to check if email is verified
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.emailVerified) {
         navigate('/dashboard');
@@ -59,7 +57,7 @@ const EmailVerification: React.FC = () => {
   return (
     <div className="min-h-screen w-full bg-gray-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-md p-8 text-center">
-        {/* Back Button */}
+
         <div className="flex justify-start mb-4">
           <Button
             variant="ghost"
@@ -74,31 +72,31 @@ const EmailVerification: React.FC = () => {
         <div className="flex justify-center mb-6">
           <img src={prodigyLogo} alt="PRODIGY" className="h-8" />
         </div>
-        
+
         <div className="flex justify-center mb-6">
           <div className="bg-blue-100 p-4 rounded-full">
             <Mail className="h-12 w-12 text-blue-600" />
           </div>
         </div>
-        
+
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Verify Your Email
         </h2>
-        
+
         <p className="text-gray-600 mb-6">
-          We've sent a verification email to <strong>{userEmail}</strong>. 
+          We've sent a verification email to <strong>{userEmail}</strong>.
           Please click the link in the email to verify your account.
         </p>
-        
+
         <div className="space-y-4">
-          <Button 
+          <Button
             onClick={handleCheckVerification}
             className="w-full bg-[#D2353E] hover:bg-[#D2353E]/90"
           >
             <CheckCircle className="h-4 w-4 mr-2" />
             I've Verified My Email
           </Button>
-          
+
           <Button
             variant="outline"
             onClick={handleResendVerification}
@@ -118,7 +116,7 @@ const EmailVerification: React.FC = () => {
             )}
           </Button>
         </div>
-        
+
         <p className="text-sm text-gray-500 mt-6">
           Didn't receive the email? Check your spam folder or try resending.
         </p>

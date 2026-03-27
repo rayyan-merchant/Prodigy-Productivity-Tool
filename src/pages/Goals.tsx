@@ -64,7 +64,7 @@ const Goals: React.FC = () => {
         deadline: goalData.deadline!,
         isCompleted: false
       });
-      
+
       setGoals([newGoal, ...goals]);
       setIsCreateDialogOpen(false);
       toast.success('Goal created successfully!');
@@ -76,16 +76,16 @@ const Goals: React.FC = () => {
 
   const handleEditGoal = async (goalData: Partial<Goal>) => {
     if (!selectedGoal) return;
-    
+
     try {
       await updateGoal(selectedGoal.id, goalData);
-      
+
       const updatedGoal: Goal = {
         ...selectedGoal,
         ...goalData,
         updatedAt: new Date().toISOString()
       };
-      
+
       setGoals(goals.map(goal => goal.id === selectedGoal.id ? updatedGoal : goal));
       setIsEditDialogOpen(false);
       setSelectedGoal(null);
@@ -110,22 +110,22 @@ const Goals: React.FC = () => {
   const handleUpdateProgress = async (goalId: string, newValue: number) => {
     try {
       const isCompleted = newValue >= goals.find(g => g.id === goalId)?.targetValue!;
-      await updateGoal(goalId, { 
+      await updateGoal(goalId, {
         currentValue: newValue,
         isCompleted
       });
-      
-      setGoals(goals.map(goal => 
-        goal.id === goalId 
-          ? { 
-              ...goal, 
+
+      setGoals(goals.map(goal =>
+        goal.id === goalId
+          ? {
+              ...goal,
               currentValue: newValue,
               isCompleted,
               updatedAt: new Date().toISOString()
             }
           : goal
       ));
-      
+
       if (isCompleted) {
         toast.success('Congratulations! Goal completed! 🎉');
       }
@@ -151,7 +151,7 @@ const Goals: React.FC = () => {
 
   return (
     <div className="p-6 space-y-6 animate-fade-in">
-      {/* Header */}
+
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Goals</h1>
@@ -165,7 +165,6 @@ const Goals: React.FC = () => {
         </Button>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardContent className="p-6">
@@ -178,7 +177,7 @@ const Goals: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
@@ -190,7 +189,7 @@ const Goals: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
@@ -204,7 +203,6 @@ const Goals: React.FC = () => {
         </Card>
       </div>
 
-      {/* Filters */}
       <div className="flex flex-wrap gap-2">
         {['all', 'personal', 'work', 'health', 'learning', 'other'].map((category) => (
           <Button
@@ -219,7 +217,6 @@ const Goals: React.FC = () => {
         ))}
       </div>
 
-      {/* Goals Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredGoals.map((goal) => (
           <GoalCard
@@ -251,7 +248,6 @@ const Goals: React.FC = () => {
         </div>
       )}
 
-      {/* Create Goal Dialog */}
       <GoalForm
         isOpen={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
@@ -259,7 +255,6 @@ const Goals: React.FC = () => {
         goal={null}
       />
 
-      {/* Edit Goal Dialog */}
       <GoalForm
         isOpen={isEditDialogOpen}
         onClose={() => {

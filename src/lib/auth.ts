@@ -1,7 +1,6 @@
-
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   onAuthStateChanged,
   updateProfile,
@@ -13,10 +12,8 @@ import { auth, db } from './firebase';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { toast } from 'sonner';
 
-// Store the current user
 let currentUser: User | null = null;
 
-// Listen for auth state changes
 onAuthStateChanged(auth, (user) => {
   currentUser = user;
 });
@@ -52,23 +49,20 @@ export const resendVerificationEmail = async (): Promise<void> => {
 
 export const signUp = async (email: string, password: string, name: string): Promise<User> => {
   try {
-    // Create user
+
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
-    
-    // Update profile with name
+
     await updateProfile(user, {
       displayName: name
     });
 
-    // Store user data in Firestore
     await setDoc(doc(db, 'users', user.uid), {
       name,
       email,
-      emailVerified: true, // Skip email verification
+      emailVerified: true,
       createdAt: serverTimestamp()
     });
 
-    // Create user settings document
     await setDoc(doc(db, 'users', user.uid, 'settings', 'preferences'), {
       theme: 'light',
       notificationsEnabled: true,
@@ -78,7 +72,7 @@ export const signUp = async (email: string, password: string, name: string): Pro
     localStorage.setItem('isAuthenticated', 'true');
     localStorage.setItem('userName', name);
     localStorage.setItem('userEmail', email);
-    
+
     return user;
   } catch (error) {
     console.error("Error signing up", error);
@@ -89,16 +83,15 @@ export const signUp = async (email: string, password: string, name: string): Pro
 export const signIn = async (email: string, password: string): Promise<User> => {
   try {
     const { user } = await signInWithEmailAndPassword(auth, email, password);
-    
-    // Get user data from Firestore
+
     const userDoc = await getDoc(doc(db, 'users', user.uid));
     if (userDoc.exists()) {
       const userData = userDoc.data();
-      // Update local storage for legacy support
+
       localStorage.setItem('userName', userData.name || user.displayName || '');
       localStorage.setItem('userEmail', userData.email || user.email || '');
     }
-    
+
     localStorage.setItem('isAuthenticated', 'true');
     return user;
   } catch (error) {
@@ -119,17 +112,15 @@ export const sendPasswordReset = async (email: string): Promise<void> => {
 
 export const logout = async (): Promise<void> => {
   try {
-    // Remove localStorage items first before signing out
+
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userName');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userBio');
     localStorage.removeItem('profileImage');
-    
-    // Then sign out from Firebase - don't show toast since we'll redirect immediately
+
     await firebaseSignOut(auth);
-    
-    // No need for toast since we redirect immediately
+
     return Promise.resolve();
   } catch (error) {
     console.error("Error signing out", error);

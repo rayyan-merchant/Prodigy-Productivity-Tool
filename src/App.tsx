@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -33,7 +32,6 @@ import GlobalKeyboardListener from "./components/GlobalKeyboardListener";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 import { useOffline } from "./hooks/useOffline";
 
-// Ensure consistent theme across the app
 const applyTheme = () => {
   const theme = localStorage.getItem('theme') || 'light';
   const root = window.document.documentElement;
@@ -53,41 +51,37 @@ const queryClient = new QueryClient({
   },
 });
 
-// Configure sonner toast defaults
 import { toast } from 'sonner';
 toast.success = (message, options) => toast(message, { ...options, style: { backgroundColor: 'white', color: 'black' } });
 toast.error = (message, options) => toast(message, { ...options, style: { backgroundColor: 'white', color: 'black' } });
 
 const AppContent = () => {
   const [authChecked, setAuthChecked] = useState(false);
-  
-  // Initialize keyboard shortcuts
+
   useKeyboardShortcuts();
-  
-  // Initialize offline functionality
+
   const { isOnline } = useOffline();
 
   useEffect(() => {
-    // Apply theme on initial load
+
     applyTheme();
-    
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      // If user exists, we are authenticated
+
       if (user) {
         localStorage.setItem('isAuthenticated', 'true');
-        // Store basic user info in localStorage for legacy support
+
         if (user.displayName) localStorage.setItem('userName', user.displayName);
         if (user.email) localStorage.setItem('userEmail', user.email);
         if (user.photoURL) localStorage.setItem('profileImage', user.photoURL);
       } else {
-        // Clear auth state if user is null
+
         localStorage.removeItem('isAuthenticated');
       }
-      // Mark auth as checked so we can render the app
+
       setAuthChecked(true);
     });
 
-    // Handle theme toggle events
     const handleThemeToggle = () => {
       const currentTheme = localStorage.getItem('theme') || 'light';
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -98,14 +92,12 @@ const AppContent = () => {
 
     window.addEventListener('toggleTheme', handleThemeToggle);
 
-    // Clean up subscription on unmount
     return () => {
       unsubscribe();
       window.removeEventListener('toggleTheme', handleThemeToggle);
     };
   }, []);
 
-  // Don't render the app until we've checked authentication
   if (!authChecked) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -118,7 +110,7 @@ const AppContent = () => {
     <>
       <GlobalKeyboardListener />
       <Routes>
-        {/* Public routes - always in light mode */}
+
         <Route path="/" element={
           isAuthenticated() ? <Navigate to="/dashboard" /> : <Landing />
         } />
@@ -128,8 +120,7 @@ const AppContent = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
         <Route path="/contact" element={<Contact />} />
-        
-        {/* Protected routes */}
+
         <Route element={
           <ProtectedRoute>
             <LayoutWrapper />
@@ -145,15 +136,13 @@ const AppContent = () => {
           <Route path="/notes/edit/:id" element={<FullNoteEditor />} />
           <Route path="/notes/edit" element={<FullNoteEditor />} />
         </Route>
-        
-        {/* Pomodoro route - separate since it has its own layout */}
+
         <Route path="/pomodoro" element={
           <ProtectedRoute>
             <PomodoroTimer />
           </ProtectedRoute>
         } />
-        
-        {/* 404 route */}
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

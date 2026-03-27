@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/landing/Header';
@@ -11,8 +10,7 @@ import useForceLightMode from '@/hooks/useForceLightMode';
 
 const Landing: React.FC = () => {
   const navigate = useNavigate();
-  
-  // Force light mode for landing page
+
   useForceLightMode();
 
   return (

@@ -1,13 +1,12 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Bold, 
-  Italic, 
-  Underline, 
-  ListOrdered, 
+import {
+  Bold,
+  Italic,
+  Underline,
+  ListOrdered,
   Copy,
   Check,
   Eye,
@@ -52,37 +51,37 @@ const TextEditor: React.FC<TextEditorProps> = ({
 
       <TabsContent value="edit" className="space-y-4">
         <div className="flex gap-2 border-b pb-2">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             size="icon"
             onClick={() => onFormatting('bold')}
           >
             <Bold className="h-4 w-4" />
           </Button>
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             size="icon"
             onClick={() => onFormatting('italic')}
           >
             <Italic className="h-4 w-4" />
           </Button>
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             size="icon"
             onClick={() => onFormatting('underline')}
           >
             <Underline className="h-4 w-4" />
           </Button>
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             size="icon"
             onClick={() => onFormatting('list')}
           >
             <ListOrdered className="h-4 w-4" />
           </Button>
           <div className="border-l mx-2" />
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             size="sm"
             onClick={onCopy}
             className="flex items-center gap-2"
@@ -102,8 +101,8 @@ const TextEditor: React.FC<TextEditorProps> = ({
       </TabsContent>
 
       <TabsContent value="preview">
-        <div 
-          className="min-h-[500px] border rounded-md p-4 overflow-auto prose prose-sm max-w-none" 
+        <div
+          className="min-h-[500px] border rounded-md p-4 overflow-auto prose prose-sm max-w-none"
           dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
         />
       </TabsContent>

@@ -1,11 +1,9 @@
-
 import { db } from '@/lib/firebase';
 import { collection, doc, addDoc, updateDoc, deleteDoc, getDocs, query, orderBy, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { getCurrentUser } from '@/lib/auth';
 import { Goal } from '@/types/goals';
 import { createGoalActivity } from '@/services/activityService';
 
-// Convert Firestore goal to our Goal type
 const convertFirestoreGoal = (doc: any): Goal => {
   const data = doc.data();
   return {
@@ -23,7 +21,6 @@ const convertFirestoreGoal = (doc: any): Goal => {
   };
 };
 
-// Get all goals for the current user
 export const getGoals = async (): Promise<Goal[]> => {
   try {
     const user = getCurrentUser();
@@ -31,7 +28,7 @@ export const getGoals = async (): Promise<Goal[]> => {
       user: user ? { uid: user.uid, email: user.email } : null,
       authCurrentUser: !!user
     });
-    
+
     if (!user) {
       console.error('❌ [GOALS] User not authenticated in getGoals');
       throw new Error('User not authenticated');
@@ -40,9 +37,9 @@ export const getGoals = async (): Promise<Goal[]> => {
     console.log('📥 [GOALS] Fetching goals for user:', user.uid);
     const goalsRef = collection(db, 'users', user.uid, 'goals');
     console.log('📍 [GOALS] Collection path:', `users/${user.uid}/goals`);
-    
+
     const q = query(goalsRef, orderBy('updatedAt', 'desc'));
-    
+
     const querySnapshot = await getDocs(q);
     const goals = querySnapshot.docs.map(convertFirestoreGoal);
     console.log('✅ [GOALS] Successfully fetched goals:', goals.length);
@@ -58,16 +55,15 @@ export const getGoals = async (): Promise<Goal[]> => {
   }
 };
 
-// Create a new goal
 export const createGoal = async (goalData: Omit<Goal, 'id' | 'createdAt' | 'updatedAt'>): Promise<Goal> => {
   const user = getCurrentUser();
-  
+
   try {
     console.log('🔍 [GOALS] Create - Authentication check:', {
       user: user ? { uid: user.uid, email: user.email } : null,
       authenticated: !!user
     });
-    
+
     if (!user) {
       console.error('❌ [GOALS] User not authenticated in createGoal');
       throw new Error('User not authenticated');
@@ -75,25 +71,24 @@ export const createGoal = async (goalData: Omit<Goal, 'id' | 'createdAt' | 'upda
 
     console.log('📝 [GOALS] Creating goal for user:', user.uid);
     console.log('📝 [GOALS] Goal data:', goalData);
-    
+
     const now = serverTimestamp();
     const goalsRef = collection(db, 'users', user.uid, 'goals');
     console.log('📍 [GOALS] Target collection path:', `users/${user.uid}/goals`);
-    
+
     const dataToSave = {
       ...goalData,
       createdAt: now,
       updatedAt: now,
       userId: user.uid
     };
-    
+
     console.log('💾 [GOALS] Data being saved to Firestore:', dataToSave);
-    
+
     const docRef = await addDoc(goalsRef, dataToSave);
 
     console.log('✅ [GOALS] Successfully created goal with ID:', docRef.id);
-    
-    // Create activity for goal creation
+
     await createGoalActivity(
       'New goal created',
       `"${goalData.title}" was created`,
@@ -114,19 +109,17 @@ export const createGoal = async (goalData: Omit<Goal, 'id' | 'createdAt' | 'upda
       stack: error.stack,
       name: error.name
     });
-    
-    // Check for common Firestore permission errors
+
     if (error.code === 'permission-denied') {
       console.error('🚫 [GOALS] PERMISSION DENIED - Check Firestore security rules!');
       console.error('🚫 [GOALS] Current user:', user?.uid);
       console.error('🚫 [GOALS] Attempted path:', `users/${user?.uid}/goals`);
     }
-    
+
     throw error;
   }
 };
 
-// Update an existing goal
 export const updateGoal = async (goalId: string, goalData: Partial<Omit<Goal, 'id' | 'createdAt' | 'updatedAt'>>): Promise<void> => {
   try {
     const user = getCurrentUser();
@@ -137,15 +130,14 @@ export const updateGoal = async (goalId: string, goalData: Partial<Omit<Goal, 'i
 
     console.log('Updating goal:', goalId, goalData);
     const goalRef = doc(db, 'users', user.uid, 'goals', goalId);
-    
+
     await updateDoc(goalRef, {
       ...goalData,
       updatedAt: serverTimestamp()
     });
-    
+
     console.log('Successfully updated goal:', goalId);
-    
-    // Create activity for goal updates
+
     if (goalData.title) {
       await createGoalActivity(
         'Goal updated',
@@ -153,8 +145,7 @@ export const updateGoal = async (goalId: string, goalData: Partial<Omit<Goal, 'i
         goalId
       );
     }
-    
-    // Create activity for goal completion
+
     if (goalData.isCompleted) {
       await createGoalActivity(
         'Goal completed',
@@ -168,7 +159,6 @@ export const updateGoal = async (goalId: string, goalData: Partial<Omit<Goal, 'i
   }
 };
 
-// Delete a goal
 export const deleteGoal = async (goalId: string): Promise<void> => {
   try {
     const user = getCurrentUser();
@@ -177,7 +167,6 @@ export const deleteGoal = async (goalId: string): Promise<void> => {
       throw new Error('User not authenticated');
     }
 
-    // Get goal title before deletion for activity
     const goalRef = doc(db, 'users', user.uid, 'goals', goalId);
     const goalDoc = await getDocs(query(collection(db, 'users', user.uid, 'goals')));
     const goal = goalDoc.docs.find(doc => doc.id === goalId);
@@ -186,8 +175,7 @@ export const deleteGoal = async (goalId: string): Promise<void> => {
     console.log('Deleting goal:', goalId);
     await deleteDoc(goalRef);
     console.log('Successfully deleted goal:', goalId);
-    
-    // Create activity for goal deletion
+
     await createGoalActivity(
       'Goal deleted',
       `"${goalTitle}" was deleted`,

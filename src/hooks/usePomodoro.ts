@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { useTimer } from '@/contexts/TimerContext';
 import { useNotifications } from '@/hooks/useNotifications';
@@ -38,7 +37,6 @@ export const usePomodoro = () => {
   const [pomodorosUntilLongBreak, setPomodorosUntilLongBreak] = useState(settings.longBreakInterval - (sessionsCompleted % settings.longBreakInterval));
   const [isWaitingForUser, setIsWaitingForUser] = useState(false);
 
-  // Import notification hook
   const { notifyPomodoroStart, notifyPomodoroEnd, notifyBreakStart, notifyBreakEnd } = useNotifications();
 
   const calculateProgress = useCallback(() => {
@@ -68,7 +66,7 @@ export const usePomodoro = () => {
       setIsActive(false);
     } else {
       if (isWaitingForUser) {
-        // User is starting after a wait period
+
         setIsWaitingForUser(false);
         if (isBreak) {
           notifyBreakStart(isLongBreak);
@@ -76,7 +74,7 @@ export const usePomodoro = () => {
           notifyPomodoroStart();
         }
       } else {
-        // Normal start
+
         if (isBreak) {
           notifyBreakStart(isLongBreak);
         } else {
@@ -117,40 +115,36 @@ export const usePomodoro = () => {
           setMinutes(minutes - 1);
           setSeconds(59);
         } else {
-          // Timer finished
+
           setIsActive(false);
-          
+
           if (isBreak) {
-            // Break ended
+
             notifyBreakEnd();
             setIsBreak(false);
             setIsLongBreak(false);
-            
-            // Check if we should prompt for note save
+
             if (sessionNotes.trim()) {
               setShouldPromptForNoteSave(true);
             }
           } else {
-            // Focus session ended
+
             notifyPomodoroEnd();
-            
-            // Increment completed sessions
+
             incrementSessionsCompleted();
             const newSessionsCompleted = sessionsCompleted + 1;
-            
-            // Check if it's time for long break
+
             if (newSessionsCompleted % settings.longBreakInterval === 0) {
               setIsLongBreak(true);
             }
-            
+
             setIsBreak(true);
-            
-            // Check if we should prompt for note save
+
             if (sessionNotes.trim()) {
               setShouldPromptForNoteSave(true);
             }
           }
-          
+
           setIsWaitingForUser(true);
           resetTimer();
         }
@@ -159,14 +153,14 @@ export const usePomodoro = () => {
 
     return () => clearInterval(interval);
   }, [
-    isActive, 
-    minutes, 
-    seconds, 
-    isBreak, 
-    isLongBreak, 
-    sessionsCompleted, 
-    settings.longBreakInterval, 
-    sessionNotes, 
+    isActive,
+    minutes,
+    seconds,
+    isBreak,
+    isLongBreak,
+    sessionsCompleted,
+    settings.longBreakInterval,
+    sessionNotes,
     isWaitingForUser,
     notifyPomodoroEnd,
     notifyBreakEnd,

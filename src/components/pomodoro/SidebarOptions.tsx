@@ -1,13 +1,12 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { 
-  BookOpen, 
-  StickyNote, 
-  Settings, 
-  BarChart3, 
+import {
+  BookOpen,
+  StickyNote,
+  Settings,
+  BarChart3,
   Volume2,
   Users,
   Shield,
@@ -44,7 +43,7 @@ const SidebarOptions: React.FC<SidebarOptionsProps> = ({
 
   return (
     <div className="space-y-4">
-      {/* Enhanced Focus Options */}
+
       <Card className="bg-white/10 border-white/20 backdrop-blur-sm text-white">
         <CardContent className="p-4">
           <h3 className="font-medium mb-3">Focus Type</h3>
@@ -70,7 +69,6 @@ const SidebarOptions: React.FC<SidebarOptionsProps> = ({
         </CardContent>
       </Card>
 
-      {/* Quick Actions */}
       <Card className="bg-white/10 border-white/20 backdrop-blur-sm text-white">
         <CardContent className="p-4">
           <h3 className="font-medium mb-3">Quick Actions</h3>
@@ -97,7 +95,6 @@ const SidebarOptions: React.FC<SidebarOptionsProps> = ({
         </CardContent>
       </Card>
 
-      {/* Goals & Habits */}
       <Card className="bg-white/10 border-white/20 backdrop-blur-sm text-white">
         <CardContent className="p-4">
           <h3 className="font-medium mb-3">Goals & Habits</h3>
@@ -124,7 +121,6 @@ const SidebarOptions: React.FC<SidebarOptionsProps> = ({
         </CardContent>
       </Card>
 
-      {/* Enhanced Features */}
       <Card className="bg-white/10 border-white/20 backdrop-blur-sm text-white">
         <CardContent className="p-4">
           <h3 className="font-medium mb-3">Enhanced Features</h3>
@@ -177,7 +173,6 @@ const SidebarOptions: React.FC<SidebarOptionsProps> = ({
         </CardContent>
       </Card>
 
-      {/* Settings */}
       <Card className="bg-white/10 border-white/20 backdrop-blur-sm text-white">
         <CardContent className="p-4">
           <Button

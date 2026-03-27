@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -27,7 +26,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
-// Define form schema
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
@@ -51,7 +49,6 @@ const SignInForm: React.FC<SignInFormProps> = ({ onToggleMode }) => {
   const [isResetting, setIsResetting] = useState(false);
   const navigate = useNavigate();
 
-  // Initialize form
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -60,7 +57,6 @@ const SignInForm: React.FC<SignInFormProps> = ({ onToggleMode }) => {
     },
   });
 
-  // Initialize reset form
   const resetForm = useForm<ResetFormData>({
     resolver: zodResolver(resetSchema),
     defaultValues: {
@@ -68,12 +64,11 @@ const SignInForm: React.FC<SignInFormProps> = ({ onToggleMode }) => {
     },
   });
 
-  // Form submission handler
   const onSubmit = async (data: FormData) => {
     try {
       setIsLoading(true);
       await signIn(data.email, data.password);
-      
+
       toast.success("Signed in successfully!");
       navigate('/dashboard');
     } catch (error: any) {
@@ -149,8 +144,8 @@ const SignInForm: React.FC<SignInFormProps> = ({ onToggleMode }) => {
                         className="rounded-md pr-10"
                         {...field}
                       />
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                         onClick={togglePasswordVisibility}
                       >
@@ -180,10 +175,10 @@ const SignInForm: React.FC<SignInFormProps> = ({ onToggleMode }) => {
             >
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>
-            
+
             <div className="text-center text-sm">
               <span className="text-gray-600">Don't have an account? </span>
-              <button 
+              <button
                 type="button"
                 className="text-[#D2353E] hover:underline font-medium"
                 onClick={onToggleMode}
@@ -191,7 +186,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ onToggleMode }) => {
                 Sign up
               </button>
             </div>
-            
+
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-gray-300" />
@@ -200,19 +195,18 @@ const SignInForm: React.FC<SignInFormProps> = ({ onToggleMode }) => {
                 <span className="bg-white px-2 text-gray-500">Or continue with</span>
               </div>
             </div>
-            
+
             <GoogleSignInButton />
           </form>
         </Form>
       </div>
 
-      {/* Password Reset Dialog */}
       <Dialog open={showResetDialog} onOpenChange={setShowResetDialog}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Reset Password</DialogTitle>
           </DialogHeader>
-          
+
           <Form {...resetForm}>
             <form onSubmit={resetForm.handleSubmit(onResetSubmit)} className="space-y-4">
               <FormField
@@ -233,18 +227,18 @@ const SignInForm: React.FC<SignInFormProps> = ({ onToggleMode }) => {
                   </FormItem>
                 )}
               />
-              
+
               <DialogFooter>
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   onClick={() => setShowResetDialog(false)}
                   disabled={isResetting}
                 >
                   Cancel
                 </Button>
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={isResetting}
                   className="bg-[#D2353E] hover:bg-[#D2353E]/90"
                 >

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
   Dialog,
@@ -62,7 +61,7 @@ const HabitForm: React.FC<HabitFormProps> = ({ isOpen, onClose, onSave, habit })
           <DialogHeader>
             <DialogTitle>{habit ? 'Edit Habit' : 'Create New Habit'}</DialogTitle>
           </DialogHeader>
-          
+
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
               <Label htmlFor="name">Habit Name</Label>
@@ -74,7 +73,7 @@ const HabitForm: React.FC<HabitFormProps> = ({ isOpen, onClose, onSave, habit })
                 required
               />
             </div>
-            
+
             <div className="grid gap-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
@@ -105,7 +104,7 @@ const HabitForm: React.FC<HabitFormProps> = ({ isOpen, onClose, onSave, habit })
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="grid gap-2">
                 <Label htmlFor="frequency">Frequency</Label>
                 <Select
@@ -135,7 +134,7 @@ const HabitForm: React.FC<HabitFormProps> = ({ isOpen, onClose, onSave, habit })
               />
             </div>
           </div>
-          
+
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel

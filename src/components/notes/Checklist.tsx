@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, ChevronDown, ChevronRight } from 'lucide-react';
@@ -14,7 +13,6 @@ interface ChecklistProps {
 const Checklist: React.FC<ChecklistProps> = ({ items, onChange }) => {
   const [showCompleted, setShowCompleted] = useState(true);
 
-  // Separate completed and incomplete items
   const incompleteItems = items.filter(item => !item.completed);
   const completedItems = items.filter(item => item.completed);
 
@@ -33,7 +31,7 @@ const Checklist: React.FC<ChecklistProps> = ({ items, onChange }) => {
   };
 
   const updateItem = (id: string, updates: Partial<ChecklistItemData>) => {
-    const updatedItems = items.map(item => 
+    const updatedItems = items.map(item =>
       item.id === id ? { ...item, ...updates } : item
     );
     onChange(updatedItems);
@@ -81,7 +79,7 @@ const Checklist: React.FC<ChecklistProps> = ({ items, onChange }) => {
       if (item.id === parentId) {
         return {
           ...item,
-          subItems: (item.subItems || []).map(subItem => 
+          subItems: (item.subItems || []).map(subItem =>
             subItem.id === subItemId ? { ...subItem, ...updates } : subItem
           )
         };
@@ -93,7 +91,7 @@ const Checklist: React.FC<ChecklistProps> = ({ items, onChange }) => {
 
   return (
     <div className="space-y-2">
-      {/* Incomplete Items */}
+
       <div className="space-y-1">
         {incompleteItems.map((item) => (
           <ChecklistItem
@@ -108,7 +106,6 @@ const Checklist: React.FC<ChecklistProps> = ({ items, onChange }) => {
         ))}
       </div>
 
-      {/* Add New Item Button */}
       <Button
         variant="ghost"
         onClick={addNewItem}
@@ -118,7 +115,6 @@ const Checklist: React.FC<ChecklistProps> = ({ items, onChange }) => {
         Add item
       </Button>
 
-      {/* Completed Section */}
       {completedItems.length > 0 && (
         <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
           <Button
@@ -133,7 +129,7 @@ const Checklist: React.FC<ChecklistProps> = ({ items, onChange }) => {
             )}
             Completed ({completedItems.length})
           </Button>
-          
+
           {showCompleted && (
             <div className="space-y-1 opacity-75">
               {completedItems.map((item) => (

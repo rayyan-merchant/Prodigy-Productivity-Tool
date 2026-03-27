@@ -30,7 +30,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete, onStatusCha
     medium: "bg-yellow-100 text-yellow-800",
     high: "bg-red-100 text-red-800"
   };
-  
+
   const statusColors = {
     todo: "bg-gray-100 text-gray-800",
     "in-progress": "bg-brand-blue/20 text-brand-blue",
@@ -49,7 +49,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete, onStatusCha
 
   return (
     <Card className={cn(
-      "task-card h-full", 
+      "task-card h-full",
       task.status === "completed" ? "border-green-200 bg-green-50/30" : ""
     )}>
       <CardHeader className="pb-2">
@@ -68,12 +68,12 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, onDelete, onStatusCha
       <CardContent>
         <p className="text-sm text-gray-600 mb-4">{task.description}</p>
         <div className="flex justify-between items-center">
-          <Badge 
-            variant="outline" 
+          <Badge
+            variant="outline"
             className={cn(statusColors[task.status], "cursor-pointer")}
             onClick={handleStatusClick}
           >
-            {task.status === "in-progress" ? "In Progress" : 
+            {task.status === "in-progress" ? "In Progress" :
               task.status.charAt(0).toUpperCase() + task.status.slice(1)}
           </Badge>
           {task.dueDate && (

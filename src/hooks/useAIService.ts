@@ -17,7 +17,7 @@ export const useAIService = () => {
 
       console.log('Calling AI with prompt:', prompt);
 
-      const apiKey = import.meta.env.VITE_MISTRAL_API_KEY; // ✅ Load from .env
+      const apiKey = import.meta.env.VITE_MISTRAL_API_KEY;
       if (!apiKey) {
         throw new Error("MISTRAL API Key not found. Please set VITE_MISTRAL_API_KEY in .env");
       }

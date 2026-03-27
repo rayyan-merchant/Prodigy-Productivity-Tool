@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface TimerCircleProps {
@@ -11,14 +10,14 @@ const TimerCircle: React.FC<TimerCircleProps> = ({ minutes, seconds, progress })
   return (
     <div className="relative h-80 w-80 rounded-full border-8 border-white/20 flex items-center justify-center mb-8">
       <svg className="absolute inset-0 h-full w-full -rotate-90">
-        <circle 
-          cx="50%" 
-          cy="50%" 
-          r="46%" 
+        <circle
+          cx="50%"
+          cy="50%"
+          r="46%"
           strokeWidth="4%"
-          stroke="white" 
-          strokeDasharray="100" 
-          strokeDashoffset={100 - progress} 
+          stroke="white"
+          strokeDasharray="100"
+          strokeDashoffset={100 - progress}
           fill="none"
           className="transition-all duration-1000 ease-linear"
         />

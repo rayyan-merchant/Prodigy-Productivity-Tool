@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -31,7 +30,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
 }) => {
   const [saving, setSaving] = useState(false);
 
-  // Handle image upload
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -41,7 +39,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
           toast.error('User not authenticated');
           return;
         }
-        
+
         toast.loading("Uploading image...");
         const imageUrl = await uploadProfileImage(user.uid, file);
         onProfileImageChange(imageUrl);
@@ -53,7 +51,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
     }
   };
 
-  // Save profile info
   const handleSaveProfile = async () => {
     try {
       const user = getCurrentUser();
@@ -61,7 +58,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
         toast.error('User not authenticated');
         return;
       }
-      
+
       setSaving(true);
       await updateUserProfile(user.uid, {
         name,
@@ -99,10 +96,10 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
                 <div className="flex items-center gap-2 rounded-md border border-input bg-background px-4 py-2 hover:bg-[#D2353E]/10 hover:text-[#D2353E] hover:border-[#D2353E]">
                   <Camera size={16} /> Upload Image
                 </div>
-                <Input 
-                  id="picture" 
-                  type="file" 
-                  className="hidden" 
+                <Input
+                  id="picture"
+                  type="file"
+                  className="hidden"
                   accept="image/*"
                   onChange={handleImageUpload}
                 />
@@ -116,19 +113,19 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
-              <Input 
-                id="name" 
-                placeholder="John Doe" 
+              <Input
+                id="name"
+                placeholder="John Doe"
                 value={name}
                 onChange={(e) => onNameChange(e.target.value)}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input 
-                id="email" 
-                type="email" 
-                placeholder="john@example.com" 
+              <Input
+                id="email"
+                type="email"
+                placeholder="john@example.com"
                 value={email}
                 disabled
                 className="bg-muted"
@@ -148,7 +145,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
         </div>
 
         <div className="flex justify-end">
-          <Button 
+          <Button
             onClick={handleSaveProfile}
             className="bg-[#D2353E] hover:bg-[#D2353E]/90"
             disabled={saving}

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -20,7 +19,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-// Define form schema
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
@@ -38,7 +36,6 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // Initialize form
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,13 +45,12 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
     },
   });
 
-  // Form submission handler - Updated to skip email verification and redirect to dashboard
   const onSubmit = async (data: FormData) => {
     try {
       setIsLoading(true);
-      
+
       await signUp(data.email, data.password, data.name);
-      
+
       toast.success("Account created successfully!");
       navigate('/dashboard');
     } catch (error) {
@@ -134,8 +130,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
                       className="rounded-md pr-10"
                       {...field}
                     />
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                       onClick={togglePasswordVisibility}
                     >
@@ -155,10 +151,10 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
           >
             {isLoading ? "Creating account..." : "Sign up"}
           </Button>
-          
+
           <div className="text-center text-sm">
             <span className="text-gray-600">Already have an account? </span>
-            <button 
+            <button
               type="button"
               className="text-[#D2353E] hover:underline font-medium"
               onClick={onToggleMode}
@@ -166,7 +162,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
               Sign in
             </button>
           </div>
-          
+
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-gray-300" />
@@ -175,7 +171,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
               <span className="bg-white px-2 text-gray-500">Or continue with</span>
             </div>
           </div>
-          
+
           <GoogleSignInButton />
         </form>
       </Form>

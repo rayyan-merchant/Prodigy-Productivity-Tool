@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -18,11 +17,9 @@ const GoogleSignInButton = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Check if user document exists in Firestore
       const userDocRef = doc(db, 'users', user.uid);
       const userDoc = await getDoc(userDocRef);
 
-      // If user doesn't exist in Firestore, create a new document
       if (!userDoc.exists()) {
         await setDoc(userDocRef, {
           name: user.displayName,
@@ -31,7 +28,6 @@ const GoogleSignInButton = () => {
           photoURL: user.photoURL
         });
 
-        // Create user settings
         await setDoc(doc(db, 'users', user.uid, 'settings', 'preferences'), {
           theme: 'light',
           notificationsEnabled: true,
@@ -39,7 +35,6 @@ const GoogleSignInButton = () => {
         });
       }
 
-      // Legacy support
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('userName', user.displayName || '');
       localStorage.setItem('userEmail', user.email || '');

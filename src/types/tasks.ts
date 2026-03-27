@@ -1,8 +1,7 @@
-
 export interface Task {
   id: string;
   title: string;
-  description: string; 
+  description: string;
   completed: boolean;
   priority: 'low' | 'medium' | 'high';
   dueDate?: string;
@@ -10,7 +9,7 @@ export interface Task {
   userId: string;
   tags?: string[];
   project?: string;
-  estimatedTime?: number; // in minutes
+  estimatedTime?: number;
   status: 'todo' | 'in-progress' | 'completed';
   completedAt?: string | Date;
 }

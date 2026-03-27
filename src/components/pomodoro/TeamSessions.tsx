@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Dialog,
@@ -13,10 +12,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { 
-  Users, 
-  Plus, 
-  Search, 
+import {
+  Users,
+  Plus,
+  Search,
   Crown,
   Timer,
   Play,
@@ -42,7 +41,6 @@ const TeamSessions: React.FC<TeamSessionsProps> = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSession, setSelectedSession] = useState<string | null>(null);
 
-  // Mock data for demonstration
   const publicSessions = [
     {
       id: '1',
@@ -187,7 +185,7 @@ const TeamSessions: React.FC<TeamSessionsProps> = ({ isOpen, onClose }) => {
                             </p>
                             <p className="text-sm">{session.description}</p>
                           </div>
-                          
+
                           <div className="text-right">
                             {session.timeRemaining && (
                               <div className="flex items-center gap-1 text-sm font-mono mb-1">
@@ -351,7 +349,7 @@ const TeamSessions: React.FC<TeamSessionsProps> = ({ isOpen, onClose }) => {
                         Pro Tip: Team Sessions
                       </h5>
                       <p className="text-sm text-blue-700 dark:text-blue-200 mt-1">
-                        Team sessions help maintain group focus and accountability. 
+                        Team sessions help maintain group focus and accountability.
                         Everyone follows the same timer, and you can see who's actively participating.
                       </p>
                     </div>

@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '@/hooks/useTheme';
@@ -11,11 +10,11 @@ const GlobalKeyboardListener = () => {
   useEffect(() => {
     const handleCreateNote = () => {
       if (location.pathname === '/notes') {
-        // Trigger note creation if on notes page
+
         const event = new CustomEvent('createNoteFromShortcut');
         window.dispatchEvent(event);
       } else {
-        // Navigate to notes and create new note
+
         navigate('/notes');
         setTimeout(() => {
           const event = new CustomEvent('createNoteFromShortcut');
@@ -25,7 +24,7 @@ const GlobalKeyboardListener = () => {
     };
 
     const handleShowHelp = () => {
-      // Navigate to settings shortcuts tab
+
       navigate('/settings');
       setTimeout(() => {
         const event = new CustomEvent('showShortcutsTab');

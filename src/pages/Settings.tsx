@@ -15,30 +15,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 const Settings: React.FC = () => {
   const navigate = useNavigate();
-  
+
   const [loading, setLoading] = useState(true);
   const [profileImage, setProfileImage] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [bio, setBio] = useState<string>('');
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  
-  // Fetch user data
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         setLoading(true);
-        
+
         const user = getCurrentUser();
         if (!user) {
           toast.error('User not authenticated');
           navigate('/auth');
           return;
         }
-        
+
         const userId = user.uid;
-        
-        // Get user profile
+
         const profile = await getUserProfile(userId);
         if (profile) {
           setName(profile.name || '');
@@ -46,8 +44,7 @@ const Settings: React.FC = () => {
           setBio(profile.bio || '');
           setProfileImage(profile.photoURL || '');
         }
-        
-        // Get user settings
+
         const settings = await getUserSettings(userId);
         if (settings) {
           setNotificationsEnabled(settings.notificationsEnabled);
@@ -55,8 +52,7 @@ const Settings: React.FC = () => {
       } catch (error) {
         console.error('Error loading user data:', error);
         toast.error('Failed to load user data');
-        
-        // Fallback to localStorage for legacy support
+
         setName(localStorage.getItem('userName') || '');
         setEmail(localStorage.getItem('userEmail') || '');
         setBio(localStorage.getItem('userBio') || '');
@@ -69,19 +65,18 @@ const Settings: React.FC = () => {
     fetchUserData();
   }, [navigate]);
 
-  // Handle notification toggle
   const handleNotificationToggle = async () => {
     try {
       const user = getCurrentUser();
       if (!user) return;
-      
+
       const newValue = !notificationsEnabled;
       setNotificationsEnabled(newValue);
       await updateUserSettings(user.uid, { notificationsEnabled: newValue });
       toast.success(`Notifications ${newValue ? 'enabled' : 'disabled'}`);
     } catch (error) {
       console.error("Error updating notification settings:", error);
-      setNotificationsEnabled(!notificationsEnabled); // Revert on error
+      setNotificationsEnabled(!notificationsEnabled);
       toast.error("Failed to update notification settings");
     }
   };
@@ -93,7 +88,7 @@ const Settings: React.FC = () => {
           <Skeleton className="h-8 w-48 mb-2" />
           <Skeleton className="h-5 w-64" />
         </div>
-        
+
         <div className="space-y-6">
           <Card>
             <CardHeader>
@@ -138,7 +133,7 @@ const Settings: React.FC = () => {
             <span className="sm:hidden">Keys</span>
           </TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="profile" className="mt-6">
           <ProfileSettings
             profileImage={profileImage}

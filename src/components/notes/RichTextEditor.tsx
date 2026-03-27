@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from 'react';
 import { Bold, Italic, Underline, List, ListOrdered, Quote, Code, Link } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -21,15 +20,15 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
 
   const insertFormatting = (formatType: string) => {
     if (!textareaRef.current) return;
-    
+
     const textarea = textareaRef.current;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selectedText = value.substring(start, end);
-    
+
     let formattedText = '';
     let cursorOffset = 0;
-    
+
     switch (formatType) {
       case 'bold':
         formattedText = `**${selectedText}**`;
@@ -80,15 +79,14 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       default:
         return;
     }
-    
-    const newValue = 
-      value.substring(0, start) + 
-      formattedText + 
+
+    const newValue =
+      value.substring(0, start) +
+      formattedText +
       value.substring(end);
-    
+
     onChange(newValue);
-    
-    // Set cursor position after the insertion
+
     setTimeout(() => {
       textarea.focus();
       if (selectedText.length === 0) {
@@ -102,36 +100,36 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   return (
     <div className={`border rounded-md ${className}`}>
       <div className="flex flex-wrap gap-1 p-2 border-b bg-muted/50">
-        <Button 
+        <Button
           type="button"
-          variant="ghost" 
+          variant="ghost"
           size="sm"
           onClick={() => insertFormatting('bold')}
           className="h-8 w-8 p-0"
         >
           <Bold className="h-4 w-4" />
         </Button>
-        <Button 
+        <Button
           type="button"
-          variant="ghost" 
+          variant="ghost"
           size="sm"
           onClick={() => insertFormatting('italic')}
           className="h-8 w-8 p-0"
         >
           <Italic className="h-4 w-4" />
         </Button>
-        <Button 
+        <Button
           type="button"
-          variant="ghost" 
+          variant="ghost"
           size="sm"
           onClick={() => insertFormatting('underline')}
           className="h-8 w-8 p-0"
         >
           <Underline className="h-4 w-4" />
         </Button>
-        <Button 
+        <Button
           type="button"
-          variant="ghost" 
+          variant="ghost"
           size="sm"
           onClick={() => insertFormatting('code')}
           className="h-8 w-8 p-0"
@@ -139,36 +137,36 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <Code className="h-4 w-4" />
         </Button>
         <div className="w-px h-6 bg-border my-1" />
-        <Button 
+        <Button
           type="button"
-          variant="ghost" 
+          variant="ghost"
           size="sm"
           onClick={() => insertFormatting('list')}
           className="h-8 w-8 p-0"
         >
           <List className="h-4 w-4" />
         </Button>
-        <Button 
+        <Button
           type="button"
-          variant="ghost" 
+          variant="ghost"
           size="sm"
           onClick={() => insertFormatting('numbered-list')}
           className="h-8 w-8 p-0"
         >
           <ListOrdered className="h-4 w-4" />
         </Button>
-        <Button 
+        <Button
           type="button"
-          variant="ghost" 
+          variant="ghost"
           size="sm"
           onClick={() => insertFormatting('quote')}
           className="h-8 w-8 p-0"
         >
           <Quote className="h-4 w-4" />
         </Button>
-        <Button 
+        <Button
           type="button"
-          variant="ghost" 
+          variant="ghost"
           size="sm"
           onClick={() => insertFormatting('link')}
           className="h-8 w-8 p-0"
