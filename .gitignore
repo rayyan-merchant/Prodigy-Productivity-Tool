@@ -1,0 +1,58 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+dist-ssr
+*.local
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Test and coverage
+playwright-report
+test-results
+coverage
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Supabase temporary files
+supabase/.temp/
+
+# Public uploads (user-generated content)
+public/uploads/
+
+# Migration directory (example data and old migrations)
+migration/
+
+# Temporary files
+*.tmp
+*.temp
+fix_sql.cjs
+init_database.sql
+DEPLOYMENT.md
+
+# OS specific
+Thumbs.db
+.DS_Store
+
