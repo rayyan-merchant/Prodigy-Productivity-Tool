@@ -1,19 +1,13 @@
-
 name: Keep Supabase Awake
 on:
-  # Run every day at 8:00 AM and 8:00 PM UTC
   schedule:
     - cron: '0 8,20 * * *'
-  # Also allow manual trigger
   workflow_dispatch:
 
 jobs:
   ping-supabase:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Supabase
-        uses: fjogeleit/http-request-action@v1
-        with:
-          # Use a public endpoint like auth health check
-          url: '${{ secrets.VITE_SUPABASE_URL }}/auth/v1/health'
-          method: 'GET'
+      - name: Ping Supabase with curl
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" -X GET "${{ secrets.VITE_SUPABASE_URL }}/auth/v1/health"
