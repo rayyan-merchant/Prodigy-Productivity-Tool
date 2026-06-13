@@ -16,8 +16,8 @@ jobs:
         with:
           url: '${{ secrets.VITE_SUPABASE_URL }}/rest/v1/'
           method: 'GET'
-          headers: |
+          bearerToken: '${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}'
+          customHeaders: |
             {
-              "apikey": "${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}",
-              "Authorization": "Bearer ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}"
+              "apikey": "${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}"
             }
