@@ -14,13 +14,13 @@ A focused productivity workspace combining tasks, Pomodoro sessions, habit track
 - **Profile**: Customize your profile with avatar and bio
 - **Responsive Design**: Works on desktop and mobile devices
 
-
+---
 
 ## 📄 License
 
 Creative Commons License © 2025 [Rayyan Merchant](https://github.com/rayyan-merchant)
 
----
+
 
 ---
 
