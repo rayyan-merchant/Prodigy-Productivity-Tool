@@ -1,0 +1,23 @@
+
+name: Keep Supabase Awake
+on:
+  # Run every day at 8:00 AM and 8:00 PM UTC
+  schedule:
+    - cron: '0 8,20 * * *'
+  # Also allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: '${{ secrets.VITE_SUPABASE_URL }}/rest/v1/'
+          method: 'GET'
+          headers: |
+            {
+              "apikey": "${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}",
+              "Authorization": "Bearer ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}"
+            }
