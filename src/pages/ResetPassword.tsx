@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { updatePassword } from '@/lib/auth';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -16,9 +17,73 @@ const ResetPassword = () => {
   const [confirmation, setConfirmation] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCheckingRecovery, setIsCheckingRecovery] = useState(true);
+  const [hasRecoverySession, setHasRecoverySession] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+
+    const applyRecoverySession = async () => {
+      let session = (await supabase.auth.getSession()).data.session;
+
+      // PKCE links carry a one-time code in the query string.
+      const code = new URLSearchParams(window.location.search).get('code');
+      if (!session && code) {
+        const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+        if (exchangeError) throw exchangeError;
+        session = data.session;
+      }
+
+      // Implicit links carry tokens in the hash. Usually Supabase consumes these
+      // automatically, but explicitly handling them prevents mobile email clients
+      // from leaving the reset page without a session.
+      if (!session) {
+        const hash = new URLSearchParams(window.location.hash.slice(1));
+        const accessToken = hash.get('access_token');
+        const refreshToken = hash.get('refresh_token');
+        if (accessToken && refreshToken) {
+          const { data, error: sessionError } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+          if (sessionError) throw sessionError;
+          session = data.session;
+        }
+      }
+
+      if (!active) return;
+      setHasRecoverySession(Boolean(session));
+      if (!session) {
+        setError('This reset link is invalid or expired. Request a new password reset email.');
+      }
+      setIsCheckingRecovery(false);
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!active || !session || (event !== 'PASSWORD_RECOVERY' && event !== 'SIGNED_IN')) return;
+      setHasRecoverySession(true);
+      setError('');
+      setIsCheckingRecovery(false);
+    });
+
+    void applyRecoverySession().catch(() => {
+      if (!active) return;
+      setError('This reset link is invalid or expired. Request a new password reset email.');
+      setIsCheckingRecovery(false);
+    });
+
+    return () => {
+      active = false;
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (isCheckingRecovery || !hasRecoverySession) {
+      setError('This reset link is invalid or expired. Request a new password reset email.');
+      return;
+    }
     const parsed = passwordSchema.safeParse(password);
     if (!parsed.success) {
       setError(parsed.error.issues[0]?.message ?? 'Enter a valid password');
@@ -76,9 +141,14 @@ const ResetPassword = () => {
               />
               {error && <p id="password-error" className="text-sm text-destructive">{error}</p>}
             </div>
-            <Button className="w-full" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Updating password...' : 'Update password'}
+            <Button className="w-full" type="submit" disabled={isSubmitting || isCheckingRecovery || !hasRecoverySession}>
+              {isCheckingRecovery ? 'Verifying reset link...' : isSubmitting ? 'Updating password...' : 'Update password'}
             </Button>
+            {!isCheckingRecovery && !hasRecoverySession && (
+              <Button asChild className="w-full" variant="outline">
+                <Link to="/auth">Request a new reset link</Link>
+              </Button>
+            )}
             <Button asChild className="w-full" variant="ghost">
               <Link to="/auth">Back to sign in</Link>
             </Button>
