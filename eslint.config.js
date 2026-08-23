@@ -5,7 +5,9 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist"] },
+  // `migration/` is an ignored archival export, not the deployed Supabase source.
+  // Lint the canonical implementation in `src/` and `supabase/` instead.
+  { ignores: ["dist", "migration/**"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
