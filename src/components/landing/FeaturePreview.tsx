@@ -50,7 +50,7 @@ const FeaturePreview: React.FC = () => {
         <div className="w-40 h-40 rounded-full border-8 border-primary/20 border-t-primary relative flex items-center justify-center">
           <div className="text-2xl font-display font-bold text-card-foreground">25:00</div>
           <div className="absolute -bottom-3 bg-card px-2">
-            <span className="text-primary text-sm font-bold">FOCUS</span>
+            <span className="text-[#8f1c22] text-sm font-bold">FOCUS</span>
           </div>
         </div>
       </motion.div>
@@ -64,7 +64,7 @@ const FeaturePreview: React.FC = () => {
         className="bg-card rounded-2xl shadow-md p-6 flex flex-col justify-center border border-border"
       >
         <div className="space-y-4">
-          <button className="bg-primary text-white py-2 px-4 rounded-full w-full hover:bg-primary/90 transition-colors font-medium">
+          <button className="bg-[#8f1c22] text-white py-2 px-4 rounded-full w-full hover:bg-[#70161b] transition-colors font-medium">
             Complete Project
           </button>
           <button className="bg-secondary text-secondary-foreground py-2 px-4 rounded-full w-full hover:bg-secondary/80 transition-colors">
