@@ -37,7 +37,7 @@ PRODUCTION_DOMAIN=
 ```
 
 Important: `supabase/config.toml` currently names project
-`rbbjxhaascrheapzjkip`. Identify that project in the Supabase dashboard before
+`yhtrigqbisojsticvtyw`. Identify that project in the Supabase dashboard before
 linking or pushing. Treat it as production until proven otherwise.
 
 ## 2. Accounts And Credentials
@@ -560,7 +560,7 @@ and major diagnostics rather than relying on one run.
 
 Only proceed after staging is signed off.
 
-If `rbbjxhaascrheapzjkip` is the existing production project:
+If `yhtrigqbisojsticvtyw` is the existing production project:
 
 - Confirm it in writing in the release record.
 - Take and verify a backup.
