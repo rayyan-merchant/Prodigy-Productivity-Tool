@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { getAccountStorage, setAccountStorage } from '@/lib/accountStorage';
 import { toLocalDateKey } from '@/lib/dateOnly';
 import { fingerprint } from '@/lib/fingerprint';
+import { getEdgeFunctionErrorMessage } from '@/lib/edgeFunctionError';
 
 interface AIHydrationInsightsProps {
   history: WaterIntake[];
@@ -106,8 +107,9 @@ Format as bullet points. Keep each insight to 1-2 sentences. Focus on patterns, 
       setProvenance(`${data.provider} | ${new Date(data.generatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`);
       if (user) setAccountStorage(user.id, cacheKey, data);
     } catch (error) {
+      const message = await getEdgeFunctionErrorMessage(error, 'Could not generate insights right now');
       console.error('Error generating insights:', error);
-      toast.error('Could not generate insights right now');
+      toast.error(message);
       setInsights(null);
     } finally {
       setIsLoading(false);

@@ -4,6 +4,7 @@ import { getCurrentUser } from '@/lib/auth';
 import { getAccountStorage, setAccountStorage } from '@/lib/accountStorage';
 import { fingerprint } from '@/lib/fingerprint';
 import { deterministicTaskOrder } from '@/lib/taskPriority';
+import { getEdgeFunctionErrorMessage } from '@/lib/edgeFunctionError';
 
 export type AIResult<T> =
   | { ok: true; data: T; provider: string; generatedAt: string; cached: boolean }
@@ -42,7 +43,7 @@ const callAI = async <T>(
     const { data, error } = await supabase.functions.invoke<EdgeSuccess<T> | EdgeFailure>('ai-service', {
       body: { prompt, type, context, maxTokens },
     });
-    if (error) return { ok: false, code: 'provider', error: error.message || 'AI service is unavailable.' };
+    if (error) return { ok: false, code: 'provider', error: await getEdgeFunctionErrorMessage(error, 'AI service is unavailable.') };
     if (!data?.success) return { ok: false, code: data?.code || 'provider', error: data?.error || 'AI request failed.' };
     setAccountStorage(user.id, cacheKey, data);
     return { ok: true, data: data.data, provider: data.provider, generatedAt: data.generatedAt, cached: false };

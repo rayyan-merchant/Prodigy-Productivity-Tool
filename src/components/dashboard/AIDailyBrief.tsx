@@ -9,6 +9,7 @@ import { getAllSessions } from '@/services/sessionService';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { getAccountStorage, setAccountStorage } from '@/lib/accountStorage';
+import { getEdgeFunctionErrorMessage } from '@/lib/edgeFunctionError';
 
 const CACHE_KEY = 'ai-daily-brief';
 const CACHE_DURATION = 4 * 60 * 60 * 1000;
@@ -76,7 +77,7 @@ const AIDailyBrief: React.FC = () => {
       if (user) setAccountStorage(user.id, CACHE_KEY, { ...data, sourceFingerprint });
     } catch (err) {
       console.error('Error generating daily brief:', err);
-      toast.error(err instanceof Error ? err.message : 'Failed to generate daily brief');
+      toast.error(await getEdgeFunctionErrorMessage(err, 'Failed to generate daily brief'));
     } finally {
       setIsLoading(false);
     }
