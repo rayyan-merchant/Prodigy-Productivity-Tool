@@ -111,7 +111,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
                 <FormControl>
                   <div className="relative">
                     <Input placeholder="••••••••" type={showPassword ? "text" : "password"} disabled={isLoading} className="rounded-md pr-10" {...field} />
-                    <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground" onClick={togglePasswordVisibility}>
+                      <button type="button" aria-label={showPassword ? 'Hide password' : 'Show password'} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground" onClick={togglePasswordVisibility}>
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
                   </div>
@@ -121,13 +121,13 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleMode }) => {
             )}
           />
 
-          <Button type="submit" className="w-full bg-brand text-white hover:bg-brand/90 transition-transform hover:scale-[1.01] rounded-md py-2.5" disabled={isLoading}>
+          <Button type="submit" className="w-full bg-[#b4232a] text-white hover:bg-[#8f1c22] transition-transform hover:scale-[1.01] rounded-md py-2.5" disabled={isLoading}>
             {isLoading ? "Creating account..." : "Sign up"}
           </Button>
           
           <div className="text-center text-sm">
             <span className="text-muted-foreground">Already have an account? </span>
-            <button type="button" className="text-brand hover:underline font-medium" onClick={onToggleMode}>
+            <button type="button" className="text-[#b4232a] hover:underline font-medium" onClick={onToggleMode}>
               Sign in
             </button>
           </div>

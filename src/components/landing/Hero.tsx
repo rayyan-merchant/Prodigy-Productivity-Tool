@@ -47,7 +47,7 @@ const Hero: React.FC = () => {
       >
         <Button 
           onClick={() => navigate('/auth')} 
-          className="rounded-full bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+          className="rounded-full bg-gray-900 hover:bg-gray-800 text-white px-8 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
         >
           Start your Journey
         </Button>

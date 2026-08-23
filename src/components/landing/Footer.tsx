@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
         <div className="mb-6 md:mb-0">
           <BrandLogo className="mb-4" />
         </div>
-        <div className="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-sm text-muted-foreground">
+        <div className="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-sm text-slate-600">
            <Link to="/terms-of-service" className="hover:text-primary transition-colors">Terms of Service</Link>
            <Link to="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
            <Link to="/contact" className="hover:text-primary transition-colors">Contact</Link>

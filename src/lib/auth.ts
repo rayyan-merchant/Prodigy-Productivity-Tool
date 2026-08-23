@@ -41,7 +41,7 @@ export const getCurrentSession = (): Session | null => {
 };
 
 export const isEmailVerified = (): boolean => {
-  return currentUser?.email_confirmed_at !== null;
+  return Boolean(currentUser?.email_confirmed_at);
 };
 
 export const resendVerificationEmail = async (): Promise<void> => {

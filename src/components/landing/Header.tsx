@@ -12,7 +12,7 @@ const Header: React.FC = () => {
       <BrandLogo />
       <Button 
         onClick={() => navigate('/auth')} 
-        className="rounded-full bg-primary hover:bg-primary/90 text-white px-6 font-semibold"
+        className="rounded-full bg-gray-900 hover:bg-gray-800 text-white px-6 font-semibold"
       >
         SIGN IN
       </Button>

@@ -51,11 +51,11 @@ const Auth = () => {
         </div>
         
         {/* Brand section (right side) */}
-        <div className="w-full md:w-2/5 bg-brand text-brand-foreground p-8 md:p-12 flex flex-col justify-center items-center text-center">
-          <h2 className="text-2xl font-display font-bold mb-4 text-brand-foreground">
+        <div className="w-full md:w-2/5 bg-[#b4232a] text-white p-8 md:p-12 flex flex-col justify-center items-center text-center">
+          <h2 className="text-2xl font-display font-bold mb-4 text-white">
             {isLogin ? "Hello again!" : "Join Prodigy!"}
           </h2>
-          <p className="mb-6 text-brand-foreground/80">
+          <p className="mb-6 text-white/80">
             {isLogin 
               ? "Access your tasks, habits, focus sessions, and hydration history."
               : "One dashboard for all your focus needs."
@@ -63,7 +63,7 @@ const Auth = () => {
           </p>
           <Button 
           variant="outline" 
-          className="border-2 border-brand-foreground bg-transparent text-white hover:bg-white hover:text-brand rounded-full px-8 py-2 font-semibold"
+          className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-[#b4232a] rounded-full px-8 py-2 font-semibold"
           onClick={handleToggleAuthMode}
         >
             {isLogin ? "Create Account" : "Sign In"}

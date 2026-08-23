@@ -67,7 +67,7 @@ class ErrorBoundary extends Component<Props, State> {
               <div>
                 <h2 className="text-xl font-semibold mb-2">Something went wrong</h2>
                 <p className="text-sm text-muted-foreground mb-4">
-                  {this.state.error?.message || 'An unexpected error occurred'}
+                  Something went wrong. Please try again.
                 </p>
               </div>
 

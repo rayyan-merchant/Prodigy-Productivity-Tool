@@ -46,7 +46,7 @@ const CTABanner: React.FC = () => {
             <Button 
               variant="outline" 
               size="lg" 
-              className="border-white/20 text-white hover:bg-white/10 font-semibold px-8 py-6 text-lg rounded-xl"
+              className="border-gray-900/30 bg-white/70 text-gray-900 hover:bg-white font-semibold px-8 py-6 text-lg rounded-xl"
             >
               Watch Demo
             </Button>

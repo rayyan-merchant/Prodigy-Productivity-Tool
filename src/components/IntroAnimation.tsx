@@ -147,7 +147,7 @@ const IntroAnimation: React.FC<IntroAnimationProps> = ({ onComplete }) => {
 
           {/* Tagline */}
           <motion.p
-            className="mt-3 text-lg text-muted-foreground font-medium tracking-wide"
+            className="mt-3 text-lg text-slate-600 font-medium tracking-wide"
             variants={taglineVariants}
             initial="hidden"
             animate="visible"
