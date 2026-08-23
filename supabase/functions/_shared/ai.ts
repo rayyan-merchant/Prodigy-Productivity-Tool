@@ -60,3 +60,57 @@ export const readProviderText = async (response: Response): Promise<string> => {
   return text.trim();
 };
 
+type AiMessage = { role: 'system' | 'user'; content: string };
+
+interface GenerateAiTextOptions {
+  messages: AiMessage[];
+  maxTokens: number;
+  temperature?: number;
+}
+
+/**
+ * Groq is the primary provider. Gemini is a live fallback rather than merely
+ * an alternative for projects where no Groq key has been configured.
+ */
+export const generateAiText = async ({ messages, maxTokens, temperature }: GenerateAiTextOptions) => {
+  const providers = [
+    {
+      name: 'Groq',
+      key: Deno.env.get('GROQ_API_KEY'),
+      url: 'https://api.groq.com/openai/v1/chat/completions',
+      model: 'openai/gpt-oss-20b',
+    },
+    {
+      name: 'Gemini',
+      key: Deno.env.get('GEMINI_API_KEY'),
+      url: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
+      model: 'gemini-3.5-flash',
+    },
+  ].filter((provider): provider is { name: string; key: string; url: string; model: string } => Boolean(provider.key));
+
+  if (providers.length === 0) throw new Error('AI provider is not configured.');
+
+  let lastError: unknown;
+  for (const provider of providers) {
+    try {
+      const response = await fetchWithTimeout(provider.url, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${provider.key}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: provider.model,
+          max_tokens: maxTokens,
+          temperature,
+          messages,
+        }),
+      });
+      return { text: await readProviderText(response), provider: provider.name };
+    } catch (error) {
+      lastError = error;
+      const message = error instanceof Error ? error.message : 'Provider request failed.';
+      console.warn(JSON.stringify({ event: 'ai_provider_fallback', provider: provider.name, message }));
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error('AI provider request failed.');
+};
+
