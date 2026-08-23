@@ -6,7 +6,6 @@ import Header from '@/components/landing/Header';
 import Hero from '@/components/landing/Hero';
 import HowItWorks from '@/components/landing/HowItWorks';
 import FeaturePreview from '@/components/landing/FeaturePreview';
-import Testimonials from '@/components/landing/Testimonials';
 import FAQ from '@/components/landing/FAQ';
 import CTABanner from '@/components/landing/CTABanner';
 import Footer from '@/components/landing/Footer';
@@ -39,10 +38,6 @@ const Landing: React.FC = () => {
       
       <motion.div {...fadeInUp}>
         <FeaturePreview />
-      </motion.div>
-      
-      <motion.div {...fadeInUp}>
-        <Testimonials />
       </motion.div>
       
       <motion.div {...fadeInUp}>

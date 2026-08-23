@@ -50,6 +50,7 @@ migration/
 *.temp
 fix_sql.cjs
 init_database.sql
+DEPLOYMENT.md
 
 # OS specific
 Thumbs.db

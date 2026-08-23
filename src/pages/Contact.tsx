@@ -72,8 +72,8 @@ const Contact: React.FC = () => {
           <h2 className="text-2xl font-bold mb-4 text-gray-900">Contact Information</h2>
           <div className="flex items-center justify-center space-x-2 text-gray-700">
             <Mail className="h-5 w-5" />
-            <a href="mailto:support@useprodigy.app" className="text-[#D2353E] hover:underline">
-              support@useprodigy.app
+            <a href="mailto:k230073@nu.edu.pk" className="text-[#D2353E] hover:underline">
+              k230073@nu.edu.pk
             </a>
           </div>
         </div>

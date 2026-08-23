@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 const CTABanner: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-20 bg-gradient-to-r from-[#FFC5C5] to-[#ffdddd] text-gray-900 relative overflow-hidden">
       {/* Background Pattern */}
@@ -33,6 +36,7 @@ const CTABanner: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg" 
+              onClick={() => navigate('/auth')}
               className="bg-gray-900 text-white hover:bg-gray-800 font-semibold px-8 py-6 text-lg rounded-xl"
             >
               Start Free Today

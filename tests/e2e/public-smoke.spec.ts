@@ -14,6 +14,9 @@ test('public routes render without horizontal overflow', async ({ page }) => {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   expect(overflow).toBe(false);
   await expect(page.getByRole('button', { name: /start your journey/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /loved by 10,000\+ users/i })).toHaveCount(0);
+  await page.getByRole('button', { name: /start free today/i }).click();
+  await expect(page).toHaveURL(/\/auth$/);
 
   await page.goto('/auth');
   await expect(page.getByRole('heading', { name: /welcome back/i })).toBeVisible();
