@@ -1,5 +1,5 @@
 
-import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,23 +15,24 @@ import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 import { toast } from 'sonner';
 import IntroAnimation from "./components/IntroAnimation";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { lazyWithRetry } from './lib/lazyWithRetry';
 
-const LayoutWrapper = lazy(() => import("./components/LayoutWrapper"));
-const NotFound = lazy(() => import("./pages/NotFound"));
-const Auth = lazy(() => import("./pages/Auth"));
-const Landing = lazy(() => import("./pages/Landing"));
-const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
-const TermsOfService = lazy(() => import("./pages/TermsOfService"));
-const Contact = lazy(() => import("./pages/Contact"));
-const ResetPassword = lazy(() => import("./pages/ResetPassword"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
-const Tasks = lazy(() => import("./pages/Tasks"));
-const Analytics = lazy(() => import("./pages/Analytics"));
-const Settings = lazy(() => import("./pages/Settings"));
-const Habits = lazy(() => import("./pages/Habits"));
-const PomodoroTimer = lazy(() => import("./pages/PomodoroTimer"));
-const WaterTracker = lazy(() => import("./pages/WaterTracker"));
-const Calendar = lazy(() => import("./pages/Calendar"));
+const LayoutWrapper = lazyWithRetry(() => import("./components/LayoutWrapper"));
+const NotFound = lazyWithRetry(() => import("./pages/NotFound"));
+const Auth = lazyWithRetry(() => import("./pages/Auth"));
+const Landing = lazyWithRetry(() => import("./pages/Landing"));
+const PrivacyPolicy = lazyWithRetry(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazyWithRetry(() => import("./pages/TermsOfService"));
+const Contact = lazyWithRetry(() => import("./pages/Contact"));
+const ResetPassword = lazyWithRetry(() => import("./pages/ResetPassword"));
+const Dashboard = lazyWithRetry(() => import("./pages/Dashboard"));
+const Tasks = lazyWithRetry(() => import("./pages/Tasks"));
+const Analytics = lazyWithRetry(() => import("./pages/Analytics"));
+const Settings = lazyWithRetry(() => import("./pages/Settings"));
+const Habits = lazyWithRetry(() => import("./pages/Habits"));
+const PomodoroTimer = lazyWithRetry(() => import("./pages/PomodoroTimer"));
+const WaterTracker = lazyWithRetry(() => import("./pages/WaterTracker"));
+const Calendar = lazyWithRetry(() => import("./pages/Calendar"));
 
 const applyTheme = () => {
   const theme = localStorage.getItem('theme') || 'light';

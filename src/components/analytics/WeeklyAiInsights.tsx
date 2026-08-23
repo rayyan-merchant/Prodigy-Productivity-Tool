@@ -6,6 +6,7 @@ import { Sparkles } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { generateWeeklyInsights } from '@/services/supabaseAiService';
 import { useToast } from '@/hooks/use-toast';
+import AIResponseMarkdown from '@/components/AIResponseMarkdown';
 
 interface WeeklyAiInsightsProps {
   completedTasks: number;
@@ -94,7 +95,7 @@ const WeeklyAiInsights: React.FC<WeeklyAiInsightsProps> = ({
           </div>
         ) : insight ? (
           <div className="bg-primary/10 p-4 rounded-md border border-primary/20">
-            <p className="text-sm italic">{insight}</p>
+            <AIResponseMarkdown className="italic">{insight}</AIResponseMarkdown>
             {provenance && <p className="mt-3 text-xs text-muted-foreground">{provenance}</p>}
           </div>
         ) : (

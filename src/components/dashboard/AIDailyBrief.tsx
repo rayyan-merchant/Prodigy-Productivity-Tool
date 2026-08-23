@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { getAccountStorage, setAccountStorage } from '@/lib/accountStorage';
 import { getEdgeFunctionErrorMessage } from '@/lib/edgeFunctionError';
+import AIResponseMarkdown from '@/components/AIResponseMarkdown';
 
 const CACHE_KEY = 'ai-daily-brief';
 const CACHE_DURATION = 4 * 60 * 60 * 1000;
@@ -83,106 +84,6 @@ const AIDailyBrief: React.FC = () => {
     }
   };
 
-  const renderInlineMarkdown = (text: string) => {
-    return text.split(/(\*\*[^*]+\*\*)/g).map((segment, index) => {
-      if (segment.startsWith('**') && segment.endsWith('**')) {
-        return (
-          <strong key={index} className="font-semibold text-foreground">
-            {segment.slice(2, -2)}
-          </strong>
-        );
-      }
-      return <React.Fragment key={index}>{segment}</React.Fragment>;
-    });
-  };
-
-  const renderMarkdown = (text: string) => {
-    const lines = text.split('\n');
-    const blocks: React.ReactNode[] = [];
-    let listType: 'ul' | 'ol' | null = null;
-    let listItems: React.ReactNode[] = [];
-
-    const flushList = () => {
-      if (!listType || listItems.length === 0) return;
-
-      blocks.push(
-        listType === 'ul' ? (
-          <ul key={`list-${blocks.length}`} className="space-y-1 pl-5 text-sm text-muted-foreground list-disc">
-            {listItems}
-          </ul>
-        ) : (
-          <ol key={`list-${blocks.length}`} className="space-y-1 pl-5 text-sm text-muted-foreground list-decimal">
-            {listItems}
-          </ol>
-        )
-      );
-
-      listType = null;
-      listItems = [];
-    };
-
-    lines.forEach((rawLine, index) => {
-      const line = rawLine.trim();
-
-      if (!line) {
-        flushList();
-        return;
-      }
-
-      const unorderedMatch = /^[-*]\s+(.+)/.exec(line);
-      const orderedMatch = /^\d+\.\s+(.+)/.exec(line);
-
-      if (unorderedMatch) {
-        if (listType !== 'ul') {
-          flushList();
-          listType = 'ul';
-        }
-        listItems.push(<li key={`li-${index}`}>{renderInlineMarkdown(unorderedMatch[1])}</li>);
-        return;
-      }
-
-      if (orderedMatch) {
-        if (listType !== 'ol') {
-          flushList();
-          listType = 'ol';
-        }
-        listItems.push(<li key={`li-${index}`}>{renderInlineMarkdown(orderedMatch[1])}</li>);
-        return;
-      }
-
-      flushList();
-
-      if (line.startsWith('#### ')) {
-        blocks.push(<h4 key={`h4-${index}`} className="pt-2 text-sm font-semibold text-foreground">{renderInlineMarkdown(line.slice(5))}</h4>);
-        return;
-      }
-
-      if (line.startsWith('### ')) {
-        blocks.push(<h3 key={`h3-${index}`} className="pt-2 text-sm font-semibold text-foreground">{renderInlineMarkdown(line.slice(4))}</h3>);
-        return;
-      }
-
-      if (line.startsWith('## ')) {
-        blocks.push(<h2 key={`h2-${index}`} className="pt-2 text-base font-semibold text-foreground">{renderInlineMarkdown(line.slice(3))}</h2>);
-        return;
-      }
-
-      if (line.startsWith('# ')) {
-        blocks.push(<h2 key={`h1-${index}`} className="pt-2 text-lg font-semibold text-foreground">{renderInlineMarkdown(line.slice(2))}</h2>);
-        return;
-      }
-
-      blocks.push(
-        <p key={`p-${index}`} className="text-sm leading-6 text-muted-foreground">
-          {renderInlineMarkdown(line)}
-        </p>
-      );
-    });
-
-    flushList();
-    return blocks;
-  };
-
   return (
     <div className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card/80 to-transparent backdrop-blur-sm overflow-hidden">
       <div className="flex items-center justify-between px-5 py-3">
@@ -217,7 +118,7 @@ const AIDailyBrief: React.FC = () => {
               <div className="h-3 bg-muted rounded-full animate-pulse w-5/6" />
             </div>
           ) : brief ? (
-            <div className="space-y-2">{renderMarkdown(brief)}</div>
+            <AIResponseMarkdown>{brief}</AIResponseMarkdown>
           ) : (
             <p className="text-sm text-muted-foreground">Click refresh to generate your morning brief.</p>
           )}

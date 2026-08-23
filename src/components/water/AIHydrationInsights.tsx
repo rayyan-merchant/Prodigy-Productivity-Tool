@@ -11,6 +11,7 @@ import { getAccountStorage, setAccountStorage } from '@/lib/accountStorage';
 import { toLocalDateKey } from '@/lib/dateOnly';
 import { fingerprint } from '@/lib/fingerprint';
 import { getEdgeFunctionErrorMessage } from '@/lib/edgeFunctionError';
+import AIResponseMarkdown from '@/components/AIResponseMarkdown';
 
 interface AIHydrationInsightsProps {
   history: WaterIntake[];
@@ -146,8 +147,8 @@ Format as bullet points. Keep each insight to 1-2 sentences. Focus on patterns, 
       </CardHeader>
       <CardContent>
         {insights ? (
-          <div className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">
-            {insights}
+          <div>
+            <AIResponseMarkdown>{insights}</AIResponseMarkdown>
             {provenance && <p className="mt-3 text-xs">{provenance}</p>}
           </div>
         ) : (
